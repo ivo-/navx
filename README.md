@@ -26,7 +26,7 @@ Don't be scared we will explain it in details later.
 
 *Initial data:*
 ```js
-const input = {
+const data = {
   a: [
     { aa: 1, bb: 2 },
     { cc: 3 },
@@ -100,9 +100,11 @@ Object.entries(data).reduce((result, [key, value]) => {
 const data = [1, 2, 3, 4, 5, 6, 7, 8];
 
 // Navx
-transform([filterer((v => v % 2 !== 0)), LAST], (v => v + 1), data);
 transform([EACH, (v => v % 2 !== 0), LAST], (v => v + 1), data);
 // => [1, 2, 3, 4, 5, 6, 8, 8]
+
+// Navx (alternative)
+transform([filterer((v => v % 2 !== 0)), LAST], (v => v + 1), data);
 
 // Native
 const [index, value] = data.reduce((res, v, i) => (
