@@ -92,6 +92,167 @@ Object.entries(data).reduce((result, [key, value]) => {
 }, {})
 ```
 
+### Rationale
+
+Performing an immutable transformations in a nested data structure results in hard
+to read, complex code (as shown in the example above). The reason for that is
+you have to write code to reconstruct all intermediate structures along
+the way. This is the result of using tools that are not designed for nested
+data and a perfect example of [incidental
+complexity](https://www.infoq.com/presentations/Simple-Made-Easy). The code that
+matters is just a fraction, compared to the boilerplate.
+
+We need an abstraction to navigate and transform just the desired part of the
+data structure, without all the error-prone, boilerplate code along the
+way. In `Navix` you describe the path your want to manipulate using
+`navigators` and then use this path to select or transform navigated data. This
+approach results in simple, fast and elegant code even for arbitrary nested
+data structures.
+
+`Navix` doesn't provide some tricky DSL, just data. Navigators are first-class
+objects that are grouped in array and then composed together.
+
+### What to expect from using Navix
+
+- It really shines the more complex the example gets.
+- It is single thing you can learn and use for both data selection and
+  transformation.
+- It initally feels unnatural, but when you grok it, you will wonder how you've
+  ever lived without it.
+- You will find yourself using it even in the most simple cases, as it becomes
+  a new way of thinking about data transformations.
+- You will find it especially useful combined with immutability libraries like
+  [Redux](https://redux.js.org/) or working with JSON APIs.
+- You will miss it in your other programming languages (except in Clojure :))
+- 0 dependency, small size library
+
+### Navigators
+
+Navix has an extremely simple core, just a single abstraction called
+`navigator`. Queries and transforms are done by composing navigators into a
+`path` precisely targeting what you want to retrieve or change. Navigators can
+be composed with any other navigators, allowing sophisticated manipulations to
+be expressed very concisely.
+
+`Navix` transforms always target precise parts of a data structure, leaving
+everything else the same.
+
+*Selection steps*:
+
+- *navigate* to the desired parts of the data structure.
+- *collect* those parts in array. And if you want just to select navigated
+  values this is the last step.
+
+*Added transformation steps*:
+
+- *transform* all collected values with the provided function.
+- *reconstruct* the original data structure.
+
+*Understanding navigation*:
+```js
+const input = {
+  a: [
+    { aa: 1, bb: 2 },
+    { cc: 3 },
+  ],
+  b: [
+    { dd: 4 },
+  ],
+};
+
+// Navigate to each of the object values
+select([OBJECT_VALS], data);
+//=> [[{ aa: 1, bb: 2 }, { cc: 3 }], [{ dd: 4 }]]
+
+// ...
+// then navigate to each of the items of object values (as object
+// values are arrays)
+select([OBJECT_VALS EACH], data);
+//=> [{ aa: 1, bb: 2 }, { cc: 3 }, { dd: 4 }]
+
+// ...
+// then navigate to object values of each of the items of the object values of
+// the initial structure (as they also are objects)
+select([OBJECT_VALS, EACH, OBJECT_VALS], data);
+//=> [1, 2, 3, 4]
+
+// ...
+// of all the navigated values, navigate only to odd ones
+select([OBJECT_VALS, EACH, OBJECT_VALS, (v => v % 2 !== 0)], data);
+//=> [1, 3]
+```
+
+*Defining navigator*:
+
+```js
+export const OBJECT_VALS = {
+  select(structure, nextFn) {
+    Object.values(structure).forEach(v => nextFn(v));
+  },
+
+  transform(structure, nextFn) {
+    return Object.keys(structure).reduce((result, k) => (
+      result[k] = nextFn(structure[k]), result
+    ), {});
+  },
+};
+```
+
+There are two functions you need to define for a navigator, one for querying -
+`select` and one for transforming - `transform`. Querying function should call
+the provided `nextFn` for all the parts of the structure that this navigator
+will navigate to. Transforming function will do almost the same, but it also
+needs to reconstruct and return the original structure along the way. Some
+navigators behave differently for different data structures and in this case
+you should define multiple select/transform pairs.
+
+To achieve select or transform, all the navigators are composed and reduced with
+the data structure you want to operate on.
+
+### Supported operations
+
+#### Select
+Always returns an array of the navigated values:
+
+```js
+select([EACH, (v => v > 0)], [-1, 2, -3, 0, 4]);
+// => [2, 4]
+```
+
+#### Transform
+
+Returns the original data structure with navigated values transformed,
+using the provided function.
+
+```js
+transform([EACH, (v => v < 0)], (v => v * v), [-1, 2, -3, 0, 4]);
+// => [1, 2, 9, 0, 4]
+```
+
+#### Set value
+
+A thin transform wrapper, that sets a constant value for the navigated
+items, instead of transforming them with function.
+
+```js
+setval([EACH, (v => v < 0)], 0, [-1, 2, -3, 0, 4]);
+// => [0, 2, 0, 0, 4]
+```
+
+Some navigators like `range` or `submap` navigate to a part of the data
+structure and we can use them to replace the whole part, like we do with values:
+
+```js
+setval([range(1, 2)], [1, 0, 4, 5], [2, 3]);
+// => [1, 2, 3, 4, 5]
+```
+
+### Learning
+
+- Documentation is along the way soon.
+- Check the `navigators.js` and `navigators_spec.js`.
+- Check [Specter](https://github.com/nathanmarz/specter)
+
 ### Other examples
 
 **Example 2: Increment the last odd number in array**
@@ -171,10 +332,5 @@ transform(
 );
 // => [[1, 2, 3, 4, 5, 6, 'c', 'd'], [7, 0, -1], [8, 8, 'c', 'd'], []]
 ```
-
-### Learning:
-
-- Check the `navigators.js` and `navigators_spec.js`
-- http://nathanmarz.com/blog/clojures-missing-piece.html
 
 ### Contributing
