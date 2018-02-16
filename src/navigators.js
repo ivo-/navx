@@ -4,7 +4,6 @@ function isPlainObject(v) {
     && !Array.isArray(v);
 }
 
-// console.log(10);
 /**
  * @example:
  *
@@ -164,7 +163,7 @@ const BEGINNING = {
  */
 const AFTER_ELEM = {
   ...Navigator,
-  name: 'AFTER',
+  name: 'AFTER_ELEM',
 
   selectForArray(_, nextFn) {
     nextFn();
@@ -183,7 +182,7 @@ const AFTER_ELEM = {
  */
 const BEFORE_ELEM = {
   ...Navigator,
-  name: 'BEFORE',
+  name: 'BEFORE_ELEM',
 
   selectForArray(_, nextFn) {
     nextFn();
@@ -202,7 +201,7 @@ const BEFORE_ELEM = {
  */
 const OBJECT_VALS = {
   ...Navigator,
-  name: 'OBJECT',
+  name: 'OBJECT_VALS',
 
   selectForObject(obj, nextFn) {
     Object.values(obj).forEach(v => nextFn(v));
@@ -220,7 +219,7 @@ const OBJECT_VALS = {
  */
 const OBJECT_KEYS = {
   ...Navigator,
-  name: 'OBJECT',
+  name: 'OBJECT_KEYS',
 
   selectForObject(obj, nextFn) {
     Object.keys(obj).forEach(k => nextFn(k));
@@ -299,7 +298,7 @@ function prop(key) {
  */
 const INDEXED_VALS = {
   ...Navigator,
-  name: 'INDEXED',
+  name: 'INDEXED_VALS',
 
   selectForArray(arr, nextFn) {
     arr.map((elem, index) => nextFn([elem, index]));
@@ -356,7 +355,7 @@ function keep(pred) {
  */
 const MAP = {
   ...Navigator,
-  name: 'SKIP',
+  name: 'MAP',
 
   checks: [
     [(() => true), 'All'],
@@ -402,7 +401,7 @@ function range(start, end) {
  */
 const RANGE_DYNAMIC = {
   ...Navigator,
-  name: 'RANGE',
+  name: 'RANGE_DYNAMIC',
 
   selectForArray(startFn, endFn, arr, nextFn) {
     nextFn(arr.slice(startFn(arr), endFn(arr)));
@@ -578,6 +577,7 @@ function or(val) {
 
 module.exports = {
   Navigator,
+
   EACH,
   FIRST,
   LAST,
@@ -599,6 +599,7 @@ module.exports = {
   KEYPATH,
   KEYPATH_STRICT,
   WHEN,
+
   keypath,
   keypathStrict,
   when,

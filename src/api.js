@@ -1,5 +1,17 @@
 const { keep } = require('./navigators');
 
+function autocurry(fn) {
+  const { length } = fn;
+
+  return function next(...args) {
+    if (args.length < length) {
+      return next.bind(this, ...args);
+    }
+
+    return fn(...args);
+  };
+}
+
 function select(...args) {
   const result = [];
   const _select = (navigator, data) => {
@@ -53,9 +65,18 @@ function setval(navigator, val, data) {
   return transform(navigator, () => val, data);
 }
 
+function multi(...args) {
+  const ops = args.slice(0, -1);
+  const data = args[args.length - 1];
+
+  return ops.reduce((res, op) => op(res), data);
+}
+
 module.exports = {
-  setval,
-  select,
-  selectOne,
-  transform,
+  setval: autocurry(setval),
+  select: autocurry(select),
+  selectOne: autocurry(selectOne),
+  transform: autocurry(transform),
+
+  multi,
 };

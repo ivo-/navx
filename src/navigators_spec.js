@@ -1,5 +1,5 @@
 /* eslint-disable quotes, no-eval */
-const { select, transform } = require('./api');
+const { select, transform, setval, multi } = require('./api');
 
 const {
   EACH,
@@ -515,6 +515,21 @@ exports.MAP = test => {
   test.done();
 };
 exports.MAP.NAVIGATOR = map;
+
+// =============================================================================
+
+exports.multi = test => {
+  test.deepEqual(
+    multi(
+      setval([EACH, (v => v < 0)], 0),
+      setval([EACH, (v => v > 10)], 10),
+
+      [-1, 1, 10, 14, 7, -4, 9, 5, 107, 10]
+    ),
+    [0, 1, 10, 10, 7, 0, 9, 5, 10, 10],
+  );
+  test.done();
+};
 
 // =============================================================================
 
