@@ -1,5 +1,7 @@
 /* eslint-disable quotes, no-eval */
-const { select, transform, setval, multi } = require('./api');
+const {
+  select, transform, setval, multi,
+} = require('./api');
 
 const {
   EACH,
@@ -43,10 +45,15 @@ exports.EACH = test => {
     { c: 3, d: 4 }
   );
 
+  test.transformsDeepEq(
+    `[EACH]`,
+    v => v.slice().reverse(),
+    { a: 1, b: 2 },
+    { 1: 'a', 2: 'b' }
+  );
+
   test.done();
 };
-exports.EACH.NAVIGATOR = EACH;
-
 
 exports.LAST = test => {
   test.selectsDeepEq(`[LAST]`, [1, 2, 3], [3]);

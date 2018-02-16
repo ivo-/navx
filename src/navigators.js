@@ -74,6 +74,21 @@ const GenericNavigator = {
 
 /**
  * Navigates to every item in Array or [key, value] pair for object.
+ *
+ * @example
+ *
+ *   select([EACH], [1, 2, 3])
+ *   // => [1, 2, 3]
+ *
+ *   transform([EACH], v => v + 1, [1, 2, 3])
+ *   // => [2, 3, 4]
+ *
+ *   select([EACH], {a: 1, b: 2})
+ *   // => [['a', 1], ['b', 2]]
+ *
+ *   transform([EACH], (v => v.slice().reverse()), {a: 1, b: 2})
+ *   // => {1: 'a', 2: 'b'}
+ *
  */
 const EACH = {
   ...Navigator,
