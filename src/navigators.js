@@ -16,6 +16,7 @@ function isPlainObject(v) {
  *       [(v) => v.constructor === Map, 'map']
  *     ],
  *   }
+ * @private
  */
 const Navigator = {
   isNavigator: true,
@@ -58,6 +59,17 @@ const Navigator = {
   transform(args, structure, nextFn) {
     return this._op(structure, args, nextFn, 'transform');
   },
+};
+
+/**
+ * @private
+ */
+const GenericNavigator = {
+  ...Navigator,
+
+  checks: [
+    [(() => true), 'All'],
+  ],
 };
 
 /**
@@ -317,12 +329,8 @@ const INDEXED_VALS = {
  * Navigates to structure only if `pred(structure)` is false.
  */
 const SKIP = {
-  ...Navigator,
+  ...GenericNavigator,
   name: 'SKIP',
-
-  checks: [
-    [(() => true), 'All'],
-  ],
 
   selectForAll(pred, structure, nextFn) {
     if (!pred(structure)) {
@@ -354,12 +362,8 @@ function keep(pred) {
  * Navigates to `fn(structure)`.
  */
 const MAP = {
-  ...Navigator,
+  ...GenericNavigator,
   name: 'MAP',
-
-  checks: [
-    [(() => true), 'All'],
-  ],
 
   bothForAll(fn, structure, nextFn) {
     return nextFn(fn(structure));
@@ -551,12 +555,8 @@ function keypathStrict(...keys) {
  * the provided argument.
  */
 const WHEN = {
-  ...Navigator,
+  ...GenericNavigator,
   name: 'WHEN',
-
-  checks: [
-    [(() => true), 'All'],
-  ],
 
   bothForAll(pred, val, structure, nextFn) {
     return nextFn(pred(structure) ? val : structure);
@@ -577,6 +577,7 @@ function or(val) {
 
 module.exports = {
   Navigator,
+  GenericNavigator,
 
   EACH,
   FIRST,
