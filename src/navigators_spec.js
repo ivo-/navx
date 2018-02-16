@@ -1,4 +1,4 @@
-/* eslint-disable quotes, no-eval */
+/* eslint-disable quotes, no-eval, no-unused-vars */
 const {
   select, transform, setval, multi,
 } = require('./api');
@@ -55,23 +55,6 @@ exports.EACH = test => {
   test.done();
 };
 
-exports.LAST = test => {
-  test.selectsDeepEq(`[LAST]`, [1, 2, 3], [3]);
-
-  test.selectsDeepEq(`[EACH, LAST]`, { a: 1, b: 2 }, [1, 2]);
-
-  test.transformsDeepEq(
-    `[EACH, LAST]`,
-    v => v + 1,
-    { a: 1, b: 2 },
-    { a: 2, b: 3 }
-  );
-
-  test.done();
-};
-exports.LAST.NAVIGATOR = LAST;
-
-
 exports.FIRST = test => {
   test.selectsDeepEq(`[FIRST]`, [1, 2, 3], [1]);
 
@@ -86,8 +69,21 @@ exports.FIRST = test => {
 
   test.done();
 };
-exports.FIRST.NAVIGATOR = FIRST;
 
+exports.LAST = test => {
+  test.selectsDeepEq(`[LAST]`, [1, 2, 3], [3]);
+
+  test.selectsDeepEq(`[EACH, LAST]`, { a: 1, b: 2 }, [1, 2]);
+
+  test.transformsDeepEq(
+    `[EACH, LAST]`,
+    v => v + 1,
+    { a: 1, b: 2 },
+    { a: 2, b: 3 }
+  );
+
+  test.done();
+};
 
 exports.OBJECT_VALS = test => {
   test.selectsDeepEq(`[OBJECT_VALS]`, { a: 1, b: 2 }, [1, 2]);

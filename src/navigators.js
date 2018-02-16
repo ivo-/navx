@@ -113,6 +113,15 @@ const EACH = {
 
 /**
  * Navigates to first item in Array.
+ *
+ * @example
+ *
+ *   select([FIRST], [1, 2, 3]);
+ *   // => [1]
+ *
+ *   setval([FIRST], 0, [1, 2, 3]);
+ *   // => [0, 2, 3]
+ *
  */
 const FIRST = {
   ...Navigator,
@@ -131,6 +140,15 @@ const FIRST = {
 
 /**
  * Navigates to last item in Array.
+ *
+ * @example
+ *
+ *   select([LAST], [1, 2, 3]);
+ *   // => [3]
+ *
+ *   setval([LAST], 0, [1, 2, 3]);
+ *   // => [1, 2, 0]
+ *
  */
 const LAST = {
   ...Navigator,
