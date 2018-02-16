@@ -1,19 +1,16 @@
-import { keep } from './navigators';
+const { keep } = require('./navigators');
 
-export function select(...args) {
+function select(...args) {
   const result = [];
   const _select = (navigator, data) => {
     if (navigator.length > 0) {
       const nav = Array.isArray(navigator[0]) ? navigator[0][0] : navigator[0];
       const navArgs = Array.isArray(navigator[0]) ? navigator[0].slice(1) : [];
 
-      const res = typeof nav === 'function'
-        ? _select([keep(nav), ...navigator.slice(1)], data)
-        : nav.select(
-          navArgs,
-          data,
-          _select.bind(this, navigator.slice(1)),
-        );
+      const res =
+        typeof nav === 'function'
+          ? _select([keep(nav), ...navigator.slice(1)], data)
+          : nav.select(navArgs, data, _select.bind(this, navigator.slice(1)));
 
       return res;
     }
@@ -26,7 +23,7 @@ export function select(...args) {
   return result;
 }
 
-export function transform(navigator, f, data) {
+function transform(navigator, f, data) {
   if (typeof f !== 'function') throw new Error(`${f} is not a function.`);
 
   if (navigator.length > 0) {
@@ -40,18 +37,25 @@ export function transform(navigator, f, data) {
     return nav.transform(
       args,
       data,
-      transform.bind(this, navigator.slice(1), f),
+      transform.bind(this, navigator.slice(1), f)
     );
   }
 
   return f(data);
 }
 
-export function selectOne(navigator, data) {
+function selectOne(navigator, data) {
   const result = select(navigator, data);
   return result[0];
 }
 
-export function setval(navigator, val, data) {
-  return transform(navigator, (() => val), data);
+function setval(navigator, val, data) {
+  return transform(navigator, () => val, data);
 }
+
+module.exports = {
+  setval,
+  select,
+  selectOne,
+  transform,
+};

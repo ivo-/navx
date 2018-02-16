@@ -4,6 +4,7 @@ function isPlainObject(v) {
     && !Array.isArray(v);
 }
 
+// console.log(10);
 /**
  * @example:
  *
@@ -17,7 +18,7 @@ function isPlainObject(v) {
  *     ],
  *   }
  */
-export const Navigator = {
+const Navigator = {
   isNavigator: true,
 
   checks: [
@@ -63,7 +64,7 @@ export const Navigator = {
 /**
  * Navigates to every item in Array or [key, value] pair for object.
  */
-export const EACH = {
+const EACH = {
   ...Navigator,
   name: 'EACH',
 
@@ -87,7 +88,7 @@ export const EACH = {
 /**
  * Navigates to first item in Array.
  */
-export const FIRST = {
+const FIRST = {
   ...Navigator,
   name: 'FIRST',
 
@@ -105,7 +106,7 @@ export const FIRST = {
 /**
  * Navigates to last item in Array.
  */
-export const LAST = {
+const LAST = {
   ...Navigator,
   name: 'LAST',
 
@@ -123,7 +124,7 @@ export const LAST = {
 /**
  * Navigates to the empty array after the end of a array.
  */
-export const END = {
+const END = {
   ...Navigator,
   name: 'END',
 
@@ -142,7 +143,7 @@ export const END = {
 /**
  * Navigates to the empty array before the beginning of a array.
  */
-export const BEGINNING = {
+const BEGINNING = {
   ...Navigator,
   name: 'BEGINNING',
 
@@ -161,7 +162,7 @@ export const BEGINNING = {
 /**
  * Navigates to the void element after the end of a array.
  */
-export const AFTER_ELEM = {
+const AFTER_ELEM = {
   ...Navigator,
   name: 'AFTER',
 
@@ -180,7 +181,7 @@ export const AFTER_ELEM = {
 /**
  * Navigates to the void element before the beginning of a array.
  */
-export const BEFORE_ELEM = {
+const BEFORE_ELEM = {
   ...Navigator,
   name: 'BEFORE',
 
@@ -199,7 +200,7 @@ export const BEFORE_ELEM = {
 /**
  * Navigates to each value of an Object.
  */
-export const OBJECT_VALS = {
+const OBJECT_VALS = {
   ...Navigator,
   name: 'OBJECT',
 
@@ -217,7 +218,7 @@ export const OBJECT_VALS = {
 /**
  * Navigates to each key of an Object.
  */
-export const OBJECT_KEYS = {
+const OBJECT_KEYS = {
   ...Navigator,
   name: 'OBJECT',
 
@@ -235,7 +236,7 @@ export const OBJECT_KEYS = {
 /**
  * Navigates to Array formed from filtering other Array.
  */
-export const FILTERER = {
+const FILTERER = {
   ...Navigator,
   name: 'FILTERER',
 
@@ -259,14 +260,14 @@ export const FILTERER = {
   },
 };
 
-export function filterer(pred) {
+function filterer(pred) {
   return [FILTERER, pred];
 }
 
 /**
  * Navigates to a property value in Object or index value in Array.
  */
-export const PROP = {
+const PROP = {
   ...Navigator,
   name: 'PROP',
 
@@ -289,14 +290,14 @@ export const PROP = {
   },
 };
 
-export function prop(key) {
+function prop(key) {
   return [PROP, key];
 }
 
 /**
  * Navigates to each [elem, index] pair in Array.
  */
-export const INDEXED_VALS = {
+const INDEXED_VALS = {
   ...Navigator,
   name: 'INDEXED',
 
@@ -316,7 +317,7 @@ export const INDEXED_VALS = {
 /**
  * Navigates to structure only if `pred(structure)` is false.
  */
-export const SKIP = {
+const SKIP = {
   ...Navigator,
   name: 'SKIP',
 
@@ -339,21 +340,21 @@ export const SKIP = {
   },
 };
 
-export function skip(pred) {
+function skip(pred) {
   return [SKIP, pred];
 }
 
 /**
  * Navigates to structure only if `pred(structure)` is true.
  */
-export function keep(pred) {
+function keep(pred) {
   return skip((...args) => !pred(...args));
 }
 
 /**
  * Navigates to `fn(structure)`.
  */
-export const MAP = {
+const MAP = {
   ...Navigator,
   name: 'SKIP',
 
@@ -366,7 +367,7 @@ export const MAP = {
   },
 };
 
-export function map(fn) {
+function map(fn) {
   return [MAP, fn];
 }
 
@@ -374,7 +375,7 @@ export function map(fn) {
  * Navigates to the sub-array bound by the indexes start (inclusive) and end
  * (exclusive).
  */
-export const RANGE = {
+const RANGE = {
   ...Navigator,
   name: 'RANGE',
 
@@ -391,7 +392,7 @@ export const RANGE = {
   },
 };
 
-export function range(start, end) {
+function range(start, end) {
   return [RANGE, start, end];
 }
 
@@ -399,7 +400,7 @@ export function range(start, end) {
  * Navigates to the sub-array bound by the indexes created by startFn(structure)
  * (inclusive) and endFn(structure) * (exclusive).
  */
-export const RANGE_DYNAMIC = {
+const RANGE_DYNAMIC = {
   ...Navigator,
   name: 'RANGE',
 
@@ -418,14 +419,14 @@ export const RANGE_DYNAMIC = {
   },
 };
 
-export function rangeDynamic(startFn, endFn) {
+function rangeDynamic(startFn, endFn) {
   return [RANGE_DYNAMIC, startFn, endFn];
 }
 
 /**
  * Navigates to a key in object (index in array), not the value.
  */
-export const PROP_NAME = {
+const PROP_NAME = {
   ...Navigator,
   name: 'PROP_NAME',
 
@@ -440,14 +441,14 @@ export const PROP_NAME = {
   },
 };
 
-export function propName(key) {
+function propName(key) {
   return [PROP_NAME, key];
 }
 
 /**
  * Navigates to a submap.
  */
-export const SUBMAP = {
+const SUBMAP = {
   ...Navigator,
   name: 'SUBMAP',
 
@@ -472,7 +473,7 @@ export const SUBMAP = {
   },
 };
 
-export function submap(keys) {
+function submap(keys) {
   return [SUBMAP, keys];
 }
 
@@ -480,7 +481,7 @@ export function submap(keys) {
  * Navigates to the value in specified keys path or `undefined` if the path
  * doesn't exist in the structure.
  */
-export const KEYPATH = {
+const KEYPATH = {
   ...Navigator,
   name: 'KEYPATH',
 
@@ -514,7 +515,7 @@ export const KEYPATH = {
   },
 };
 
-export function keypath(...keys) {
+function keypath(...keys) {
   return [KEYPATH, keys];
 }
 
@@ -522,7 +523,7 @@ export function keypath(...keys) {
  * Navigates to the value in specified keys path or stops navigation if
  * the path doesn't * exist in structure.
  */
-export const KEYPATH_STRICT = {
+const KEYPATH_STRICT = {
   ...Navigator,
   name: 'KEYPATH',
 
@@ -542,7 +543,7 @@ export const KEYPATH_STRICT = {
   },
 };
 
-export function keypathStrict(...keys) {
+function keypathStrict(...keys) {
   return [KEYPATH_STRICT, keys];
 }
 
@@ -550,7 +551,7 @@ export function keypathStrict(...keys) {
  * Navigates to the structure if `pred(structure)` is false, else navigate to
  * the provided argument.
  */
-export const WHEN = {
+const WHEN = {
   ...Navigator,
   name: 'WHEN',
 
@@ -563,7 +564,7 @@ export const WHEN = {
   },
 };
 
-export function when(pred, val) {
+function when(pred, val) {
   return [WHEN, pred, val];
 }
 
@@ -571,6 +572,44 @@ export function when(pred, val) {
  * Navigates to the value if it is not `null` or `undefined`, else navigate to
  * the provided argument.
  */
-export function or(val) {
+function or(val) {
   return [WHEN, (v => v == null), val];
 }
+
+module.exports = {
+  Navigator,
+  EACH,
+  FIRST,
+  LAST,
+  END,
+  BEGINNING,
+  AFTER_ELEM,
+  BEFORE_ELEM,
+  OBJECT_VALS,
+  OBJECT_KEYS,
+  FILTERER,
+  PROP,
+  INDEXED_VALS,
+  SKIP,
+  MAP,
+  RANGE,
+  RANGE_DYNAMIC,
+  PROP_NAME,
+  SUBMAP,
+  KEYPATH,
+  KEYPATH_STRICT,
+  WHEN,
+  keypath,
+  keypathStrict,
+  when,
+  or,
+  filterer,
+  submap,
+  propName,
+  rangeDynamic,
+  range,
+  map,
+  keep,
+  skip,
+  prop,
+};

@@ -1,7 +1,7 @@
 /* eslint-disable quotes, no-eval */
-import { select, transform } from './api';
+const { select, transform } = require('./api');
 
-import {
+const {
   EACH,
   END,
   BEGINNING,
@@ -26,7 +26,7 @@ import {
   keypathStrict,
   filterer,
   rangeDynamic,
-} from './navigators';
+} = require('./navigators');
 
 
 exports.EACH = test => {
@@ -86,7 +86,7 @@ exports.OBJECT_VALS = test => {
   test.selectsDeepEq(`[OBJECT_VALS]`, { a: 1, b: 2 }, [1, 2]);
 
   test.selectsDeepEq(
-    `[map(Object.values), [FILTERER, v => v === 2], LAST]`,
+    `[map(Object.values), filterer(v => v === 2), LAST]`,
     { a: 1, b: 2 },
     [2]
   );
