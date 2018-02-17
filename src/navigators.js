@@ -838,6 +838,24 @@ const STOP = {
   },
 };
 
+/**
+ * Navigates to the structure unchanged.
+ *
+ * @example
+ *
+ *   transform([SELF], v => v + 1, 1);
+ *   // => 2
+ *
+ */
+const SELF = {
+  ...GenericNavigator,
+  name: 'SELF',
+
+  bothForAll(structure, nextFn) {
+    return nextFn(structure);
+  },
+};
+
 module.exports = {
   Navigator,
   GenericNavigator,
@@ -864,6 +882,7 @@ module.exports = {
   KEYPATH_STRICT,
   WHEN,
   STOP,
+  SELF,
 
   keypath,
   keypathStrict,

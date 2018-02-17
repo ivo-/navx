@@ -15,6 +15,7 @@ const {
   OBJECT_KEYS,
   INDEXED_VALS,
   STOP,
+  SELF,
 
   or,
   map,
@@ -604,6 +605,18 @@ exports.STOP = test => {
     [1, 2, 3, 4],
     [1, 2, 3, 4],
   );
+
+  test.done();
+};
+
+exports.SELF = test => {
+  test.selectsDeepEq(
+    `[SELF]`,
+    [1, 2, 3, 4],
+    [[1, 2, 3, 4]],
+  );
+
+  test.transformsDeepEq(`[SELF]`, v => v + 1, 1, 2);
 
   test.done();
 };
