@@ -825,6 +825,19 @@ function beforeIndex(i) {
   return [RANGE, i, i];
 }
 
+/**
+ * For select, stops navigation and returns empty result. For transform,
+ * returns structure unchanged.
+ */
+const STOP = {
+  ...GenericNavigator,
+  name: 'STOP',
+
+  bothForAll(structure) {
+    return structure;
+  },
+};
+
 module.exports = {
   Navigator,
   GenericNavigator,
@@ -850,6 +863,7 @@ module.exports = {
   KEYPATH,
   KEYPATH_STRICT,
   WHEN,
+  STOP,
 
   keypath,
   keypathStrict,

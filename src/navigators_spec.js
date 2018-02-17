@@ -14,6 +14,7 @@ const {
   OBJECT_VALS,
   OBJECT_KEYS,
   INDEXED_VALS,
+  STOP,
 
   or,
   map,
@@ -572,6 +573,36 @@ exports.BEFORE_INDEX = test => {
     () => [3],
     [1, 2, 4, 5],
     [1, 2, 3, 4, 5],
+  );
+
+  test.done();
+};
+
+exports.STOP = test => {
+  test.selectsDeepEq(
+    `[EACH, (v => v > 1)]`,
+    [1, 2, 3, 4],
+    [2, 3, 4],
+  );
+
+  test.selectsDeepEq(
+    `[EACH, (v => v > 1), STOP]`,
+    [1, 2, 3, 4],
+    [],
+  );
+
+  test.transformsDeepEq(
+    `[EACH, (v => v > 1)]`,
+    v => v + 1,
+    [1, 2, 3, 4],
+    [1, 3, 4, 5],
+  );
+
+  test.transformsDeepEq(
+    `[EACH, (v => v > 1), STOP]`,
+    v => v + 1,
+    [1, 2, 3, 4],
+    [1, 2, 3, 4],
   );
 
   test.done();
