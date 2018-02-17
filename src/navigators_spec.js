@@ -28,6 +28,7 @@ const {
   keypathStrict,
   filterer,
   rangeDynamic,
+  beforeIndex,
 } = require('./navigators');
 
 const {
@@ -559,6 +560,23 @@ exports.OR = test => {
   test.done();
 };
 
+exports.BEFORE_INDEX = test => {
+  test.selectsDeepEq(
+    `[beforeIndex(2)]`,
+    [1, 2, 4, 5],
+    [[]],
+  );
+
+  test.transformsDeepEq(
+    `[beforeIndex(2)]`,
+    () => [3],
+    [1, 2, 4, 5],
+    [1, 2, 3, 4, 5],
+  );
+
+  test.done();
+};
+
 exports.SUBSELECT = test => {
   test.selectsDeepEq(
     `[subselect(OBJECT_VALS, EACH, OBJECT_VALS)]`,
@@ -582,7 +600,6 @@ exports.SUBSELECT = test => {
 
   test.done();
 };
-
 
 // =============================================================================
 

@@ -811,6 +811,20 @@ function or(val) {
   return [WHEN, (v => v == null), val];
 }
 
+/**
+ * Navigates to empty sub-array before selected index and previous index. It
+ * is useful to insert one or multiple elements before selected index.
+ *
+ * @example
+ *
+ *   setval([beforeIndex(2)], [3], [1, 2, 4, 5]);
+ *   // => [1, 2, 3, 4, 5]
+ *
+ */
+function beforeIndex(i) {
+  return [RANGE, i, i];
+}
+
 module.exports = {
   Navigator,
   GenericNavigator,
@@ -850,4 +864,5 @@ module.exports = {
   keep,
   skip,
   prop,
+  beforeIndex,
 };
