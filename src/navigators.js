@@ -492,7 +492,7 @@ function keep(pred) {
 }
 
 /**
- * Navigates to `fn(structure)`.
+ * @private
  */
 const MAP = {
   ...GenericNavigator,
@@ -503,6 +503,21 @@ const MAP = {
   },
 };
 
+/**
+ * Navigates to `fn(structure)`.
+ *
+ * @example
+ *
+ *   select([map(() => true)], false);
+ *   // => [true]
+ *
+ *   select([map(Object.values)], { a: 1, b: 2 });
+ *   // => [[1, 2]]
+ *
+ *   transform([EACH, map(v => v + 1)], v => v + 1, [1, 2, 3, 4]);
+ *   // => [3, 4, 5, 6]
+ *
+ */
 function map(fn) {
   return [MAP, fn];
 }

@@ -344,6 +344,26 @@ exports.KEEP = test => {
   test.done();
 };
 
+exports.MAP = test => {
+  test.selectsDeepEq(`[map(() => true)]`, null, [true]);
+  test.selectsDeepEq(`[map(Object.values)]`, { a: 1, b: 2 }, [[1, 2]]);
+
+  test.selectsDeepEq(
+    `[map(Object.values), filterer(v => v === 2), LAST]`,
+    { a: 1, b: 2 },
+    [2]
+  );
+
+  test.transformsDeepEq(
+    `[EACH, map(v => v + 1)]`,
+    v => v + 1,
+    [1, 2, 3, 4],
+    [3, 4, 5, 6],
+  );
+
+  test.done();
+};
+
 exports.RANGE = test => {
   test.selectsDeepEq(`[range(0, 1)]`, [1, 2, 3, 4, 5, 6], [[1]]);
   test.selectsDeepEq(`[range(0, 1), EACH]`, [1, 2, 3, 4, 5, 6], [1]);
@@ -529,28 +549,6 @@ exports.WHEN = test => {
   test.done();
 };
 exports.WHEN.NAVIGATOR = when;
-
-
-exports.MAP = test => {
-  test.selectsDeepEq(`[map(() => true)]`, null, [true]);
-  test.selectsDeepEq(`[map(Object.values)]`, { a: 1, b: 2 }, [[1, 2]]);
-
-  test.selectsDeepEq(
-    `[map(Object.values), filterer(v => v === 2), LAST]`,
-    { a: 1, b: 2 },
-    [2]
-  );
-
-  test.transformsDeepEq(
-    `[EACH, map(v => v + 1)]`,
-    v => v + 1,
-    [1, 2, 3, 4],
-    [3, 4, 5, 6],
-  );
-
-  test.done();
-};
-exports.MAP.NAVIGATOR = map;
 
 // =============================================================================
 
