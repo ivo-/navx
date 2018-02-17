@@ -16,7 +16,10 @@ const SUBSELECT = {
   },
 
   transformForAll(path, structure, nextFn) {
-    const transformedStructure = nextFn(select(path, structure));
+    let transformedStructure = nextFn(select(path, structure));
+    if (!Array.isArray(transformedStructure)) {
+      transformedStructure = [transformedStructure];
+    }
     return transform(path, () => transformedStructure.shift(), structure);
   },
 };
@@ -67,9 +70,52 @@ function reduced(path, fn) {
   return [MAP, v => select(path, v).reduce(fn)];
 }
 
+/**
+ * @private
+ */
+const MULTI_PATH = {
+  ...GenericNavigator,
+  name: 'MULTI_PATH',
+
+  selectForAll(paths, structure, nextFn) {
+    paths
+      .map(path => select(path, structure))
+      .reduce((p, n) => [...p, ...n])
+      .forEach(v => nextFn(v));
+  },
+
+  transformForAll(paths, structure, nextFn) {
+    return paths.reduce((res, path) => (
+      SUBSELECT.transformForAll(path, res, nextFn)
+    ), structure);
+  },
+};
+
+/**
+ * Navigates to all the items in all the pats. For transforms, applies updates
+ * to the paths in order. It is like calling select/transform multiple times.
+ *
+ * @example
+ *
+ *   select([multi-path([prop('a')], [prop('b')])], {a: 0, b: 1, c: 2});
+ *   // => [0, 1]
+ *
+ *   transform(
+ *     [multi-path([prop('a')], [prop('b')])],
+ *     v => v - 1,
+ *     { a: 0, b: 1, c: 2 }
+ *   );
+ *   // => { a: -1, b: 0, c: 2 }
+ *
+ */
+function multiPath(...paths) {
+  return [MULTI_PATH, paths];
+}
+
 module.exports = {
   SUBSELECT,
   subselect,
   transformed,
   reduced,
+  multiPath,
 };

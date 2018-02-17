@@ -37,6 +37,7 @@ const {
   subselect,
   transformed,
   reduced,
+  multiPath,
 } = require('./navigators-meta');
 
 
@@ -692,6 +693,23 @@ exports.REDUCED = test => {
     `[reduced([EACH], (p, n) => p + n)]`,
     [1, 2, 3, 4],
     [10]
+  );
+
+  test.done();
+};
+
+exports.MULTI_PATH = test => {
+  test.selectsDeepEq(
+    `[multiPath([prop('a')], [prop('b')])]`,
+    {a: 0, b: 1, c: 2},
+    [0, 1]
+  );
+
+  test.transformsDeepEq(
+    `[multiPath([prop('a')], [prop('b')])]`,
+    v => v - 1,
+    { a: 0, b: 1, c: 2 },
+    { a: -1, b: 0, c: 2 }
   );
 
   test.done();
