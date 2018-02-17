@@ -192,7 +192,7 @@ const END = {
 };
 
 /**
- * Navigates to the empty array before the beginning of a array.. Useful to add
+ * Navigates to the empty array before the beginning of a array. Useful to add
  * multiple values to array.
  *
  * @example
@@ -218,7 +218,14 @@ const BEGINNING = {
 };
 
 /**
- * Navigates to the void element after the end of a array.
+ * Navigates to the void element after the end of a array. Useful to add
+ * single value to array.
+ *
+ * @example
+ *
+ *   setval([AFTER_ELEM], 4, [1, 2, 3]);
+ *   // => [1, 2, 3, 4]
+ *
  */
 const AFTER_ELEM = {
   ...Navigator,
@@ -237,7 +244,14 @@ const AFTER_ELEM = {
 };
 
 /**
- * Navigates to the void element before the beginning of a array.
+ * Navigates to the void element before the beginning of a array. Useful to add
+ * single value to array.
+ *
+ * @example
+ *
+ *   setval([BEFORE_ELEM], 0, [1, 2, 3]);
+ *   // => [0, 1, 2, 3]
+ *
  */
 const BEFORE_ELEM = {
   ...Navigator,
