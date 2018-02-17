@@ -500,6 +500,7 @@ exports.KEYPATH_STRICT = test => {
   test.selectsDeepEq(`[keypathStrict('a', 'b')]`, { a: { b: 1 } }, [1]);
   test.selectsDeepEq(`[keypathStrict('a', 'b')]`, {}, [undefined]);
 
+  test.transformsDeepEq(`[keypathStrict('a', 'b')]`, () => 2, {}, {});
   test.transformsDeepEq(
     `[keypathStrict('a', 'b')]`,
     v => v + 1,
@@ -516,8 +517,6 @@ exports.KEYPATH_STRICT = test => {
 
   test.done();
 };
-exports.KEYPATH_STRICT.NAVIGATOR = keypathStrict;
-
 
 exports.OR = test => {
   test.selectsDeepEq(`[or(true)]`, null, [true]);

@@ -725,7 +725,7 @@ const KEYPATH = {
  *   select([keypath('a', 'b')], {});
  *   // => [undefined]
  *
- *   transform([keypathStrict('a', 'b')], v => v + 1, { a: { b: 1 } });
+ *   transform([keypathStrict('a', 'b')], v => v + 1, {});
  *   // => { a: { b: 2 } }
  *
  */
@@ -734,8 +734,7 @@ function keypath(...keys) {
 }
 
 /**
- * Navigates to the value in specified keys path or stops navigation if
- * the path doesn't * exist in structure.
+ * @private
  */
 const KEYPATH_STRICT = {
   ...Navigator,
@@ -757,6 +756,16 @@ const KEYPATH_STRICT = {
   },
 };
 
+/**
+ * Same as `keypath`, but stops navigation if the path doesn't exist
+ * in structure.
+ *
+ * @example
+ *
+ *   transform([keypathStrict('a', 'b')], v => v + 1, {});
+ *   // => {}
+ *
+ */
 function keypathStrict(...keys) {
   return [KEYPATH_STRICT, keys];
 }
