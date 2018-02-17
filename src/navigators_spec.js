@@ -35,6 +35,7 @@ const {
 
 const {
   subselect,
+  transformed,
 } = require('./navigators-meta');
 
 
@@ -640,6 +641,40 @@ exports.SUBSELECT = test => {
     v => v.slice().reverse(),
     {items: [{ a: 1 }, { b: 2 }, { c: 3 }, { d: 5 }]},
     {items: [{ a: 3 }, { b: 2 }, { c: 1 }, { d: 5 }]},
+  );
+
+  test.done();
+};
+
+exports.TRANSFORMED = test => {
+  test.selectsDeepEq(
+    `[OBJECT_VALS, map(v => v + 1)]`,
+    { a: 1, b: 2, c: 3 },
+    [2, 3, 4]
+  );
+
+  const incVals = transform([OBJECT_VALS], v => v + 1);
+  test.deepEqual(
+    incVals({ a: 1, b: 2, c: 3 }),
+    { a: 2, b: 3, c: 4 }
+  );
+
+  test.selectsDeepEq(
+    `[map(transform([OBJECT_VALS], v => v + 1))]`,
+    { a: 1, b: 2, c: 3 },
+    [{ a: 2, b: 3, c: 4 }]
+  );
+
+  test.selectsDeepEq(
+    `[transformed([OBJECT_VALS], v => v + 1)]`,
+    { a: 1, b: 2, c: 3 },
+    [{ a: 2, b: 3, c: 4 }]
+  );
+
+  test.selectsDeepEq(
+    `[transformed([OBJECT_VALS, EACH, OBJECT_VALS], v => v + 1)]`,
+    {items: [{ a: 1 }, { b: 2 }, { c: 3 }]},
+    [{items: [{ a: 2 }, { b: 3 }, { c: 4 }]}]
   );
 
   test.done();

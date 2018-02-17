@@ -1,5 +1,8 @@
-const { GenericNavigator } = require('./navigators');
 const { select, transform } = require('./api');
+const {
+  GenericNavigator,
+  MAP,
+} = require('./navigators');
 
 /**
  * @private
@@ -13,8 +16,8 @@ const SUBSELECT = {
   },
 
   transformForAll(path, structure, nextFn) {
-    const transformed = nextFn(select(path, structure));
-    return transform(path, () => transformed.shift(), structure);
+    const transformedStructure = nextFn(select(path, structure));
+    return transform(path, () => transformedStructure.shift(), structure);
   },
 };
 
@@ -37,7 +40,21 @@ function subselect(...path) {
   return [SUBSELECT, path];
 }
 
+/**
+ * Navigates to `transform(path, fn, structure)`.
+ *
+ * @example
+ *
+ *   select([transformed([OBJECT_VALS], v => v + 1)], { a: 1, b: 2, c: 3 });
+ *   // => [{ a: 2, b: 3, c: 4 }]
+ *
+ */
+function transformed(path, fn) {
+  return [MAP, transform(path, fn)];
+}
+
 module.exports = {
   SUBSELECT,
   subselect,
+  transformed,
 };
