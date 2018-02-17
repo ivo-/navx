@@ -53,8 +53,23 @@ function transformed(path, fn) {
   return [MAP, transform(path, fn)];
 }
 
+/**
+ * Navigates to a view of the current structure by transforming with a reduction
+ * over the selected values.
+ *
+ * @example
+ *
+ *   select([reduced([EACH], (p, n) => p + n)], [1, 2, 3, 4]);
+ *   // => [10]
+ *
+ */
+function reduced(path, fn) {
+  return [MAP, v => select(path, v).reduce(fn)];
+}
+
 module.exports = {
   SUBSELECT,
   subselect,
   transformed,
+  reduced,
 };

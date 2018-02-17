@@ -36,6 +36,7 @@ const {
 const {
   subselect,
   transformed,
+  reduced,
 } = require('./navigators-meta');
 
 
@@ -675,6 +676,22 @@ exports.TRANSFORMED = test => {
     `[transformed([OBJECT_VALS, EACH, OBJECT_VALS], v => v + 1)]`,
     {items: [{ a: 1 }, { b: 2 }, { c: 3 }]},
     [{items: [{ a: 2 }, { b: 3 }, { c: 4 }]}]
+  );
+
+  test.done();
+};
+
+exports.REDUCED = test => {
+  test.selectsDeepEq(
+    `[map(v => select([EACH], v).reduce((p, n) => p + n))]`,
+    [1, 2, 3, 4],
+    [10]
+  );
+
+  test.selectsDeepEq(
+    `[reduced([EACH], (p, n) => p + n)]`,
+    [1, 2, 3, 4],
+    [10]
   );
 
   test.done();
