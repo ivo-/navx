@@ -415,7 +415,6 @@ exports.RANGE_DYNAMIC = test => {
   test.done();
 };
 
-
 exports.PROP_NAME = test => {
   test.selectsDeepEq(`[propName('a')]`, { a: 1 }, ['a']);
 
@@ -434,8 +433,6 @@ exports.PROP_NAME = test => {
 
   test.done();
 };
-exports.PROP_NAME.NAVIGATOR = propName;
-
 
 exports.SUBMAP = test => {
   test.selectsDeepEq(
@@ -465,8 +462,6 @@ exports.SUBMAP = test => {
   );
   test.done();
 };
-exports.SUBMAP.NAVIGATOR = submap;
-
 
 exports.KEYPATH = test => {
   test.selectsDeepEq(`[keypath('a', 'b')]`, { a: { b: 1 } }, [1]);

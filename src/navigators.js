@@ -633,7 +633,7 @@ function propName(key) {
 }
 
 /**
- * Navigates to a submap.
+ * @private
  */
 const SUBMAP = {
   ...Navigator,
@@ -660,6 +660,18 @@ const SUBMAP = {
   },
 };
 
+/**
+ * Navigates to a submap of the original map.
+ *
+ * @example
+ *
+ *   select([submap(['a', 'b'])], { a: 1, b: 2, c: 3 });
+ *   // => [{ a: 1, b: 2 }]
+ *
+ *   transform([submap(['a', 'b'])], () => ({ d: 4 }), { a: 1, b: 2, c: 3 });
+ *   // => { c: 3, d: 4 }
+ *
+ */
 function submap(keys) {
   return [SUBMAP, keys];
 }
