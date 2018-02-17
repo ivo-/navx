@@ -238,10 +238,19 @@ exports.FILTERER = test => {
 };
 
 exports.PROP = test => {
+  test.selectsDeepEq([prop('a')], { a: 1, b: 2 }, [1]);
+
   test.selectsDeepEq(
     `[EACH, prop('a')]`,
     [{ a: 1 }, { a: 2 }, { a: 3 }],
     [1, 2, 3]
+  );
+
+  test.transformsDeepEq(
+    `[prop('a')]`,
+    () => 0,
+    { a: 1, b: 2 },
+    { a: 0, b: 2 }
   );
 
   test.transformsDeepEq(

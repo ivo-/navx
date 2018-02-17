@@ -373,7 +373,7 @@ function filterer(pred) {
 }
 
 /**
- * Navigates to a property value in Object or index value in Array.
+ * @private
  */
 const PROP = {
   ...Navigator,
@@ -398,6 +398,18 @@ const PROP = {
   },
 };
 
+/**
+ * Navigates to a property value in Object or index value in Array.
+ *
+ * @example
+ *
+ *   select([prop('a')], { a: 1, b: 2 });
+ *   // => [1]
+ *
+ *   setval([prop('a')], 0, { a: 1, b: 2 });
+ *   // => { a: 0, b: 2 }
+ *
+ */
 function prop(key) {
   return [PROP, key];
 }
