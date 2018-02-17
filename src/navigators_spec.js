@@ -495,8 +495,6 @@ exports.KEYPATH = test => {
 
   test.done();
 };
-exports.KEYPATH.NAVIGATOR = keypath;
-
 
 exports.KEYPATH_STRICT = test => {
   test.selectsDeepEq(`[keypathStrict('a', 'b')]`, { a: { b: 1 } }, [1]);

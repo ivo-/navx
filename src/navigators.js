@@ -5,7 +5,7 @@ function isPlainObject(v) {
 }
 
 /**
- * @example:
+ * @example
  *
  *   const NavigatorExtended = {
  *     ...Navigator,
@@ -677,8 +677,7 @@ function submap(keys) {
 }
 
 /**
- * Navigates to the value in specified keys path or `undefined` if the path
- * doesn't exist in the structure.
+ * @private
  */
 const KEYPATH = {
   ...Navigator,
@@ -714,6 +713,22 @@ const KEYPATH = {
   },
 };
 
+/**
+ * Navigates to the value in specified keys path or `undefined` if the path
+ * doesn't exist in the structure.
+ *
+ * @example
+ *
+ *   select([keypath('a', 'b')], { a: { b: 1 } });
+ *   // => [1]
+ *
+ *   select([keypath('a', 'b')], {});
+ *   // => [undefined]
+ *
+ *   transform([keypathStrict('a', 'b')], v => v + 1, { a: { b: 1 } });
+ *   // => { a: { b: 2 } }
+ *
+ */
 function keypath(...keys) {
   return [KEYPATH, keys];
 }
