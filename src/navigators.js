@@ -480,6 +480,12 @@ function skip(pred) {
 
 /**
  * Navigates to structure only if `pred(structure)` is true.
+ *
+ * @example
+ *
+ *   select([EACH, keep(v => v % 2 !== 0)], [2, 3, 4]);
+ *   // => [3]
+ *
  */
 function keep(pred) {
   return skip((...args) => !pred(...args));
