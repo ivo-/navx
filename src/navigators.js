@@ -523,8 +523,7 @@ function map(fn) {
 }
 
 /**
- * Navigates to the sub-array bound by the indexes start (inclusive) and end
- * (exclusive).
+ * @private
  */
 const RANGE = {
   ...Navigator,
@@ -543,13 +542,26 @@ const RANGE = {
   },
 };
 
+/**
+ * Navigates to the sub-array bound by the indexes start (inclusive) and end
+ * (exclusive).
+ *
+ * @example
+ *
+ *   select([range(0, 2)], [1, 2, 3, 4]);
+ *   // => [[1, 2]]
+ *
+ *   transform([range(0, 2)], () => [0, 0], [1, 2, 3, 4]);
+ *   // => [0, 0, 3, 4]
+ *
+ */
 function range(start, end) {
   return [RANGE, start, end];
 }
 
 /**
  * Navigates to the sub-array bound by the indexes created by startFn(structure)
- * (inclusive) and endFn(structure) * (exclusive).
+ * (inclusive) and endFn(structure).
  */
 const RANGE_DYNAMIC = {
   ...Navigator,
