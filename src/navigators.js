@@ -444,7 +444,7 @@ const INDEXED_VALS = {
 };
 
 /**
- * Navigates to structure only if `pred(structure)` is false.
+ * @private
  */
 const SKIP = {
   ...GenericNavigator,
@@ -465,6 +465,15 @@ const SKIP = {
   },
 };
 
+/**
+ * Navigates to structure only if `pred(structure)` is false.
+ *
+ * @example
+ *
+ *   select([EACH, skip(v => v % 2 !== 0)], [2, 3, 4]);
+ *   // => [2, 4]
+ *
+ */
 function skip(pred) {
   return [SKIP, pred];
 }
