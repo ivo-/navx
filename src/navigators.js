@@ -192,7 +192,14 @@ const END = {
 };
 
 /**
- * Navigates to the empty array before the beginning of a array.
+ * Navigates to the empty array before the beginning of a array.. Useful to add
+ * multiple values to array.
+ *
+ * @example
+ *
+ *   setval([BEGINNING], [-1, 0], [1, 2, 3]);
+ *   // => [-1, 0, 1, 2, 3]
+ *
  */
 const BEGINNING = {
   ...Navigator,
