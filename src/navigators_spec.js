@@ -85,6 +85,46 @@ exports.LAST = test => {
   test.done();
 };
 
+exports.END = test => {
+  test.selectsDeepEq(`[END]`, [1, 2], [undefined]);
+
+  test.transformsDeepEq(
+    `[END]`,
+    () => [3, 4],
+    [1, 2],
+    [1, 2, 3, 4],
+  );
+
+  test.transformsDeepEq(
+    `[EACH, END]`,
+    () => [100],
+    [[1], [2], [3]],
+    [[1, 100], [2, 100], [3, 100]],
+  );
+
+  test.done();
+};
+
+exports.BEGINNING = test => {
+  test.selectsDeepEq(`[BEGINNING]`, [1, 2], [undefined]);
+
+  test.transformsDeepEq(
+    `[BEGINNING]`,
+    () => [1, 2],
+    [3, 4],
+    [1, 2, 3, 4],
+  );
+
+  test.transformsDeepEq(
+    `[EACH, BEGINNING]`,
+    () => [100],
+    [[1], [2], [3]],
+    [[100, 1], [100, 2], [100, 3]],
+  );
+
+  test.done();
+};
+
 exports.OBJECT_VALS = test => {
   test.selectsDeepEq(`[OBJECT_VALS]`, { a: 1, b: 2 }, [1, 2]);
 
@@ -373,50 +413,6 @@ exports.KEYPATH_STRICT = test => {
   test.done();
 };
 exports.KEYPATH_STRICT.NAVIGATOR = keypathStrict;
-
-
-exports.END = test => {
-  test.selectsDeepEq(`[END]`, [1, 2], [undefined]);
-
-  test.transformsDeepEq(
-    `[END]`,
-    () => [3, 4],
-    [1, 2],
-    [1, 2, 3, 4],
-  );
-
-  test.transformsDeepEq(
-    `[EACH, END]`,
-    () => [100],
-    [[1], [2], [3]],
-    [[1, 100], [2, 100], [3, 100]],
-  );
-
-  test.done();
-};
-exports.END.NAVIGATOR = END;
-
-
-exports.BEGINNING = test => {
-  test.selectsDeepEq(`[BEGINNING]`, [1, 2], [undefined]);
-
-  test.transformsDeepEq(
-    `[BEGINNING]`,
-    () => [1, 2],
-    [3, 4],
-    [1, 2, 3, 4],
-  );
-
-  test.transformsDeepEq(
-    `[EACH, BEGINNING]`,
-    () => [100],
-    [[1], [2], [3]],
-    [[100, 1], [100, 2], [100, 3]],
-  );
-
-  test.done();
-};
-exports.BEGINNING.NAVIGATOR = BEGINNING;
 
 
 exports.BEFORE_ELEM = test => {

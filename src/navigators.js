@@ -166,7 +166,14 @@ const LAST = {
 };
 
 /**
- * Navigates to the empty array after the end of a array.
+ * Navigates to the empty array after the end of a array. Useful to add
+ * multiple values to array.
+ *
+ * @example
+ *
+ *   setval([END], [4, 5], [1, 2, 3]);
+ *   // => [1, 2, 3, 4, 5]
+ *
  */
 const END = {
   ...Navigator,
