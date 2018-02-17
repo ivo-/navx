@@ -771,8 +771,7 @@ function keypathStrict(...keys) {
 }
 
 /**
- * Navigates to the structure if `pred(structure)` is false, else navigate to
- * the provided argument.
+ * @private
  */
 const WHEN = {
   ...GenericNavigator,
@@ -783,6 +782,16 @@ const WHEN = {
   },
 };
 
+/**
+ * Navigates to the structure if `pred(structure)` is false, else navigate to
+ * the provided argument.
+ *
+ * @example
+ *
+ *   select([EACH, when((v => v.length == 0), [1])], [[2], [], [3], []]);
+ *   // => [[2], [1], [3], [1]]
+ *
+ */
 function when(pred, val) {
   return [WHEN, pred, val];
 }
@@ -790,6 +799,12 @@ function when(pred, val) {
 /**
  * Navigates to the value if it is not `null` or `undefined`, else navigate to
  * the provided argument.
+ *
+ * @example
+ *
+ *   select([EACH, or([1])], [[2], null, [3], null]);
+ *   // => [[2], [1], [3], [1]]
+ *
  */
 function or(val) {
   return [WHEN, (v => v == null), val];

@@ -518,6 +518,23 @@ exports.KEYPATH_STRICT = test => {
   test.done();
 };
 
+exports.WHEN = test => {
+  test.selectsDeepEq(
+    `[EACH, when((v => v.length == 0), [1])]`,
+    [[2], [], [3], []],
+    [[2], [1], [3], [1]],
+  );
+
+  test.transformsDeepEq(
+    `[EACH, when((v => v === 0), 1)]`,
+    v => v + 1,
+    [1, 0, 3, 0],
+    [2, 2, 4, 2],
+  );
+
+  test.done();
+};
+
 exports.OR = test => {
   test.selectsDeepEq(`[or(true)]`, null, [true]);
   test.selectsDeepEq(`[or(true)]`, [1, 2], [[1, 2]]);
@@ -537,26 +554,6 @@ exports.OR = test => {
 
   test.done();
 };
-exports.OR.NAVIGATOR = or;
-
-
-exports.WHEN = test => {
-  test.selectsDeepEq(
-    `[EACH, when((v => v.length == 0), [1])]`,
-    [[2], [], [3], []],
-    [[2], [1], [3], [1]],
-  );
-
-  test.transformsDeepEq(
-    `[EACH, when((v => v === 0), 1)]`,
-    v => v + 1,
-    [1, 0, 3, 0],
-    [2, 2, 4, 2],
-  );
-
-  test.done();
-};
-exports.WHEN.NAVIGATOR = when;
 
 // =============================================================================
 
