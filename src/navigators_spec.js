@@ -374,6 +374,7 @@ exports.RANGE = test => {
     [1, 2, 3, 4],
     [0, 0, 3, 4]
   );
+
   test.transformsDeepEq(
     `[range(0, 1)]`,
     () => [9, 9, 9],
@@ -385,6 +386,18 @@ exports.RANGE = test => {
 };
 
 exports.RANGE_DYNAMIC = test => {
+  test.selectsDeepEq(
+    `[rangeDynamic(() => 0, () => 2)]`,
+    [1, 2, 3, 4, 5, 6],
+    [[1, 2]]
+  );
+  test.transformsDeepEq(
+    `[rangeDynamic(() => 0, () => 2)]`,
+    ()  => [0, 0],
+    [1, 2, 3, 4],
+    [0, 0, 3, 4]
+  );
+
   test.transformsDeepEq(
     `[rangeDynamic((() => 0), (() => 1))]`,
     () => [9, 9, 9],

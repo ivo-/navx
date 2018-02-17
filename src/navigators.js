@@ -560,8 +560,7 @@ function range(start, end) {
 }
 
 /**
- * Navigates to the sub-array bound by the indexes created by startFn(structure)
- * (inclusive) and endFn(structure).
+ * @private
  */
 const RANGE_DYNAMIC = {
   ...Navigator,
@@ -582,6 +581,19 @@ const RANGE_DYNAMIC = {
   },
 };
 
+/**
+ * Navigates to the sub-array bound by the indexes created by startFn(structure)
+ * (inclusive) and endFn(structure).
+ *
+ * @example
+ *
+ *   select([rangeDynamic(() => 0, () => 2)], [1, 2, 3, 4]);
+ *   // => [[1, 2]]
+ *
+ *   transform([rangeDynamic(() => 0, () => 2)], () => [0, 0], [1, 2, 3, 4]);
+ *   // => [0, 0, 3, 4]
+ *
+ */
 function rangeDynamic(startFn, endFn) {
   return [RANGE_DYNAMIC, startFn, endFn];
 }
