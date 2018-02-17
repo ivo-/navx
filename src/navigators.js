@@ -523,7 +523,7 @@ function map(fn) {
 }
 
 /**
- * @private
+p * @private
  */
 const RANGE = {
   ...Navigator,
@@ -599,7 +599,7 @@ function rangeDynamic(startFn, endFn) {
 }
 
 /**
- * Navigates to a key in object (index in array), not the value.
+ * @private
  */
 const PROP_NAME = {
   ...Navigator,
@@ -616,6 +616,18 @@ const PROP_NAME = {
   },
 };
 
+/**
+ * Navigates to a key in object (index in array), not the value.
+ *
+ * @example
+ *
+ *   select([propName('a')], { a: 1, b: 2 });
+ *   // => ['a']
+ *
+ *   setval([prop('a')], 'c', { a: 1, b: 2 });
+ *   // => { c: 1, b: 2 }
+ *
+ */
 function propName(key) {
   return [PROP_NAME, key];
 }

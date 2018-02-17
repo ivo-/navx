@@ -414,7 +414,6 @@ exports.RANGE_DYNAMIC = test => {
 
   test.done();
 };
-exports.RANGE_DYNAMIC.NAVIGATOR = rangeDynamic;
 
 
 exports.PROP_NAME = test => {
