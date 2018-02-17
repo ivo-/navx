@@ -283,8 +283,39 @@ exports.PROP = test => {
 
   test.done();
 };
-exports.PROP.NAVIGATOR = prop;
 
+exports.INDEXED_VALS = test => {
+  test.selectsDeepEq(
+    `[INDEXED_VALS]`,
+    [1, 2, 3],
+    [[1, 0], [2, 1], [3, 2]]
+  );
+
+  test.transformsDeepEq(
+    `[INDEXED_VALS]`,
+    ([v, i]) => ([i * 2, v - 1]),
+    [1, 2, 3],
+    [0, 2, 4],
+  );
+
+  test.selectsDeepEq(
+    `[INDEXED_VALS]`,
+    [{ a: 1 }, { a: 2 }, { a: 3 }],
+    [[{ a: 1 }, 0], [{ a: 2 }, 1], [{ a: 3 }, 2]]
+  );
+
+  test.transformsDeepEq(
+    `[INDEXED_VALS]`,
+    ([v, i]) => [v, i + 1],
+    [{ a: 1 }, { a: 2 }, { a: 3 }],
+    [{ a: 1 }, { a: 2 }, { a: 3 }].reduce(
+      (result, v, i) => ((result[i + 1] = v), result),
+      new Array(4)
+    )
+  );
+
+  test.done();
+};
 
 exports.SKIP = test => {
   test.selectsDeepEq(`[EACH, skip(v => v % 2 !== 0)]`, [2, 3, 4], [2, 4]);
@@ -305,8 +336,6 @@ exports.SKIP = test => {
 
   test.done();
 };
-exports.SKIP.NAVIGATOR = skip;
-
 
 exports.KEEP = test => {
   test.selectsDeepEq(`[EACH, keep(v => v % 2 !== 0)]`, [2, 3, 4], [3]);
@@ -314,30 +343,6 @@ exports.KEEP = test => {
 
   test.done();
 };
-exports.KEEP.NAVIGATOR = keep;
-
-
-exports.INDEXED_VALS = test => {
-  test.selectsDeepEq(
-    `[INDEXED_VALS]`,
-    [{ a: 1 }, { a: 2 }, { a: 3 }],
-    [[{ a: 1 }, 0], [{ a: 2 }, 1], [{ a: 3 }, 2]]
-  );
-
-  test.transformsDeepEq(
-    `[INDEXED_VALS]`,
-    ([v, i]) => [v, i + 1],
-    [{ a: 1 }, { a: 2 }, { a: 3 }],
-    [{ a: 1 }, { a: 2 }, { a: 3 }].reduce(
-      (result, v, i) => ((result[i + 1] = v), result),
-      new Array(4)
-    )
-  );
-
-  test.done();
-};
-exports.INDEXED_VALS.NAVIGATOR = INDEXED_VALS;
-
 
 exports.RANGE = test => {
   test.selectsDeepEq(`[range(0, 1)]`, [1, 2, 3, 4, 5, 6], [[1]]);

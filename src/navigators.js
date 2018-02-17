@@ -416,6 +416,15 @@ function prop(key) {
 
 /**
  * Navigates to each [elem, index] pair in Array.
+ *
+ * @example
+ *
+ *   select([INDEXED_VALS], [1, 2, 3]);
+ *   // => [[1, 0], [2, 1], [3, 2]]
+ *
+ *   transforms([INDEXED_VALS], ([v, i]) => ([i * 2, v - 1]), [1, 2, 3])
+ *   // => [0, 2, 4]
+ *
  */
 const INDEXED_VALS = {
   ...Navigator,
