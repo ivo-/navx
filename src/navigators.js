@@ -16,6 +16,7 @@ function isPlainObject(v) {
  *       [(v) => v.constructor === Map, 'map']
  *     ],
  *   }
+ *
  * @private
  */
 const Navigator = {

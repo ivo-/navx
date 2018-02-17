@@ -30,6 +30,10 @@ const {
   rangeDynamic,
 } = require('./navigators');
 
+const {
+  subselect,
+} = require('./navigators-meta');
+
 
 exports.EACH = test => {
   test.selectsDeepEq(`[EACH]`, [1, 2], [1, 2]);
@@ -554,6 +558,31 @@ exports.OR = test => {
 
   test.done();
 };
+
+exports.SUBSELECT = test => {
+  test.selectsDeepEq(
+    `[subselect(OBJECT_VALS, EACH, OBJECT_VALS)]`,
+    {items: [{ a: 1 }, { b: 2 }, { c: 3 }]},
+    [[1, 2, 3]]
+  );
+
+  test.transformsDeepEq(
+    `[subselect(OBJECT_VALS, EACH, OBJECT_VALS)]`,
+    v => v.slice().reverse(),
+    {items: [{ a: 1 }, { b: 2 }, { c: 3 }]},
+    {items: [{ a: 3 }, { b: 2 }, { c: 1 }]},
+  );
+
+  test.transformsDeepEq(
+    `[subselect(OBJECT_VALS, EACH, OBJECT_VALS), range(0, 3)]`,
+    v => v.slice().reverse(),
+    {items: [{ a: 1 }, { b: 2 }, { c: 3 }, { d: 5 }]},
+    {items: [{ a: 3 }, { b: 2 }, { c: 1 }, { d: 5 }]},
+  );
+
+  test.done();
+};
+
 
 // =============================================================================
 
