@@ -197,6 +197,19 @@ exports.OBJECT_KEYS = test => {
   test.selectsDeepEq(`[OBJECT_KEYS]`, { a: 1, b: 2 }, ['a', 'b']);
 
   test.transformsDeepEq(
+    `[OBJECT_KEYS]`,
+    v => v + v,
+    { a: 1, b: 2 },
+    { aa: 1, bb: 2 }
+  );
+
+  test.selectsDeepEq(
+    `[OBJECT_VALS, OBJECT_KEYS]`,
+    { a: { b: 'c' }, d: { e: 'f' } },
+    ['b', 'e']
+  );
+
+  test.transformsDeepEq(
     `[OBJECT_KEYS, (v => ['a', 'b'].includes(v))]`,
     k => k + k,
     { a: 1, b: 2, c: 10 },
@@ -205,7 +218,6 @@ exports.OBJECT_KEYS = test => {
 
   test.done();
 };
-exports.OBJECT_KEYS.NAVIGATOR = OBJECT_KEYS;
 
 
 exports.FILTERER = test => {

@@ -277,7 +277,7 @@ const BEFORE_ELEM = {
  *   select([OBJECT_VALS], { a: 1, b: 2 });
  *   // => [1, 2]
  *
- *   transform([OBJECT_VALS], { a: 1, b: 2 }, v => v + 2);
+ *   transform([OBJECT_VALS], v => v + 2, { a: 1, b: 2 });
  *   // => { a: 3, b: 4 }
  *
  *   select([OBJECT_VALS, OBJECT_VALS], { a: { b: 'c' }, d: { e: 'f' } });
@@ -301,6 +301,18 @@ const OBJECT_VALS = {
 
 /**
  * Navigates to each key of an Object.
+ *
+ * @example
+ *
+ *   select([OBJECT_KEYS], { a: 1, b: 2 });
+ *   // => ['a', 'b']
+ *
+ *   transform([OBJECT_KEYS], v => v + v, { a: 1, b: 2 });
+ *   // => { aa: 1, bb: 2 }
+ *
+ *   select([OBJECT_VALS, OBJECT_KEYS], { a: { b: 'c' }, d: { e: 'f' } });
+ *   // => ['b', 'e']
+ *
  */
 const OBJECT_KEYS = {
   ...Navigator,
