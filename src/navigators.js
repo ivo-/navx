@@ -271,6 +271,18 @@ const BEFORE_ELEM = {
 
 /**
  * Navigates to each value of an Object.
+ *
+ * @example
+ *
+ *   select([OBJECT_VALS], { a: 1, b: 2 });
+ *   // => [1, 2]
+ *
+ *   transform([OBJECT_VALS], { a: 1, b: 2 }, v => v + 2);
+ *   // => { a: 3, b: 4 }
+ *
+ *   select([OBJECT_VALS, OBJECT_VALS], { a: { b: 'c' }, d: { e: 'f' } });
+ *   // => ['c', 'f']
+ *
  */
 const OBJECT_VALS = {
   ...Navigator,

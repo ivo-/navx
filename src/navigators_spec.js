@@ -169,10 +169,11 @@ exports.AFTER_ELEM = test => {
 exports.OBJECT_VALS = test => {
   test.selectsDeepEq(`[OBJECT_VALS]`, { a: 1, b: 2 }, [1, 2]);
 
-  test.selectsDeepEq(
-    `[map(Object.values), filterer(v => v === 2), LAST]`,
+  test.transformsDeepEq(
+    `[OBJECT_VALS]`,
+    v => v + 2,
     { a: 1, b: 2 },
-    [2]
+    { a: 3, b: 4 }
   );
 
   test.transformsDeepEq(
@@ -182,24 +183,15 @@ exports.OBJECT_VALS = test => {
     { a: 1, b: 3, c: 3 }
   );
 
-  test.transformsDeepEq(
-    `[OBJECT_VALS, (v => v === 2)]`,
-    v => v + 5,
-    { a: 1, b: 2, c: 2 },
-    { a: 1, b: 7, c: 7 }
-  );
-
-  test.transformsDeepEq(
-    `[prop('k'), OBJECT_VALS, (v => v === 2)]`,
-    v => v + 1,
-    { k: { a: 1, b: 2, c: 2 } },
-    { k: { a: 1, b: 3, c: 3 } }
+  test.selectsDeepEq(
+    `[OBJECT_VALS, OBJECT_VALS]`,
+    { a: { b: 'c' },
+      d: { e: 'f' } },
+    ['c', 'f']
   );
 
   test.done();
 };
-exports.OBJECT_VALS.NAVIGATOR = OBJECT_VALS;
-
 
 exports.OBJECT_KEYS = test => {
   test.selectsDeepEq(`[OBJECT_KEYS]`, { a: 1, b: 2 }, ['a', 'b']);
@@ -250,6 +242,13 @@ exports.PROP = test => {
     () => 2,
     [[1], [1], [1]],
     [[1, 2], [1, 2], [1, 2]]
+  );
+
+  test.transformsDeepEq(
+    `[prop('k'), OBJECT_VALS, (v => v === 2)]`,
+    v => v + 1,
+    { k: { a: 1, b: 2, c: 2 } },
+    { k: { a: 1, b: 3, c: 3 } }
   );
 
   test.done();
@@ -500,6 +499,12 @@ exports.WHEN.NAVIGATOR = when;
 exports.MAP = test => {
   test.selectsDeepEq(`[map(() => true)]`, null, [true]);
   test.selectsDeepEq(`[map(Object.values)]`, { a: 1, b: 2 }, [[1, 2]]);
+
+  test.selectsDeepEq(
+    `[map(Object.values), filterer(v => v === 2), LAST]`,
+    { a: 1, b: 2 },
+    [2]
+  );
 
   test.transformsDeepEq(
     `[EACH, map(v => v + 1)]`,
