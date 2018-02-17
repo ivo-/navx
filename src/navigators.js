@@ -330,7 +330,7 @@ const OBJECT_KEYS = {
 };
 
 /**
- * Navigates to Array formed from filtering other Array.
+ * @private
  */
 const FILTERER = {
   ...Navigator,
@@ -356,6 +356,18 @@ const FILTERER = {
   },
 };
 
+/**
+ * Navigates to Array formed from filtering other Array.
+ *
+ * @example
+ *
+ *   select([filterer(v => v % 2 === 0)], [1, 2, 3, 4, 5]);
+ *   // => [[2, 4]]
+ *
+ *   transform([filterer(v => v % 2 === 0)], () => [20, 40], [1, 2, 3, 4, 5]);
+ *   // => [1, 20, 3, 40, 5]
+ *
+ */
 function filterer(pred) {
   return [FILTERER, pred];
 }

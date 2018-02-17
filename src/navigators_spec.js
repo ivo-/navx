@@ -221,12 +221,21 @@ exports.OBJECT_KEYS = test => {
 
 
 exports.FILTERER = test => {
-  // TODO:
-  test.ok(true);
+  test.selectsDeepEq(
+    `[filterer(v => v % 2 === 0)]`,
+    [1, 2, 3, 4, 5],
+    [[2, 4]]
+  );
+
+  test.transformsDeepEq(
+    `[filterer(v => v % 2 === 0)]`,
+    () => [20, 40],
+    [1, 2, 3, 4, 5],
+    [1, 20, 3, 40, 5]
+  );
+
   test.done();
 };
-exports.FILTERER.NAVIGATOR = filterer;
-
 
 exports.PROP = test => {
   test.selectsDeepEq(
