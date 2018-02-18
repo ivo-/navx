@@ -1,7 +1,9 @@
 const api = require('./api');
 const navigators = require('./navigators');
+const navigatorsMeta = require('./navigators-meta');
 
 module.exports = {
-  ...navigators,
   ...api,
+  ...navigators,
+  ...navigatorsMeta,
 };
