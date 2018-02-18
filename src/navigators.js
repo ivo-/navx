@@ -1,3 +1,6 @@
+/*
+ * @private
+ */
 function isPlainObject(v) {
   return typeof v === 'object'
     && v !== null
@@ -5,8 +8,6 @@ function isPlainObject(v) {
 }
 
 /**
- * @example
- *
  *   const NavigatorExtended = {
  *     ...Navigator,
  *     name: 'NavigatorExtended',
@@ -78,7 +79,6 @@ const GenericNavigator = {
 /**
  * Navigates to every item in Array or [key, value] pair for object.
  *
- * @example
  *
  *   select([EACH], [1, 2, 3])
  *   // => [1, 2, 3]
@@ -117,8 +117,6 @@ const EACH = {
 /**
  * Navigates to first item in Array.
  *
- * @example
- *
  *   select([FIRST], [1, 2, 3]);
  *   // => [1]
  *
@@ -143,8 +141,6 @@ const FIRST = {
 
 /**
  * Navigates to last item in Array.
- *
- * @example
  *
  *   select([LAST], [1, 2, 3]);
  *   // => [3]
@@ -172,8 +168,6 @@ const LAST = {
  * Navigates to the empty array after the end of a array. Useful to add
  * multiple values to array.
  *
- * @example
- *
  *   setval([END], [4, 5], [1, 2, 3]);
  *   // => [1, 2, 3, 4, 5]
  *
@@ -197,8 +191,6 @@ const END = {
 /**
  * Navigates to the empty array before the beginning of a array. Useful to add
  * multiple values to array.
- *
- * @example
  *
  *   setval([BEGINNING], [-1, 0], [1, 2, 3]);
  *   // => [-1, 0, 1, 2, 3]
@@ -224,8 +216,6 @@ const BEGINNING = {
  * Navigates to the void element after the end of a array. Useful to add
  * single value to array.
  *
- * @example
- *
  *   setval([AFTER_ELEM], 4, [1, 2, 3]);
  *   // => [1, 2, 3, 4]
  *
@@ -250,8 +240,6 @@ const AFTER_ELEM = {
  * Navigates to the void element before the beginning of a array. Useful to add
  * single value to array.
  *
- * @example
- *
  *   setval([BEFORE_ELEM], 0, [1, 2, 3]);
  *   // => [0, 1, 2, 3]
  *
@@ -274,8 +262,6 @@ const BEFORE_ELEM = {
 
 /**
  * Navigates to each value of an Object.
- *
- * @example
  *
  *   select([OBJECT_VALS], { a: 1, b: 2 });
  *   // => [1, 2]
@@ -304,8 +290,6 @@ const OBJECT_VALS = {
 
 /**
  * Navigates to each key of an Object.
- *
- * @example
  *
  *   select([OBJECT_KEYS], { a: 1, b: 2 });
  *   // => ['a', 'b']
@@ -362,14 +346,13 @@ const FILTERER = {
 /**
  * Navigates to Array formed from filtering other Array.
  *
- * @example
- *
  *   select([filterer(v => v % 2 === 0)], [1, 2, 3, 4, 5]);
  *   // => [[2, 4]]
  *
  *   transform([filterer(v => v % 2 === 0)], () => [20, 40], [1, 2, 3, 4, 5]);
  *   // => [1, 20, 3, 40, 5]
  *
+ * @param {Function} pred
  */
 function filterer(pred) {
   return [FILTERER, pred];
@@ -404,14 +387,13 @@ const PROP = {
 /**
  * Navigates to a property value in Object or index value in Array.
  *
- * @example
- *
  *   select([prop('a')], { a: 1, b: 2 });
  *   // => [1]
  *
  *   setval([prop('a')], 0, { a: 1, b: 2 });
  *   // => { a: 0, b: 2 }
  *
+ * @param {String | Number} key
  */
 function prop(key) {
   return [PROP, key];
@@ -419,8 +401,6 @@ function prop(key) {
 
 /**
  * Navigates to each [elem, index] pair in Array.
- *
- * @example
  *
  *   select([INDEXED_VALS], [1, 2, 3]);
  *   // => [[1, 0], [2, 1], [3, 2]]
@@ -471,11 +451,10 @@ const SKIP = {
 /**
  * Navigates to structure only if `pred(structure)` is false.
  *
- * @example
- *
  *   select([EACH, skip(v => v % 2 !== 0)], [2, 3, 4]);
  *   // => [2, 4]
  *
+ * @param {Function} pred
  */
 function skip(pred) {
   return [SKIP, pred];
@@ -484,11 +463,10 @@ function skip(pred) {
 /**
  * Navigates to structure only if `pred(structure)` is true.
  *
- * @example
- *
  *   select([EACH, keep(v => v % 2 !== 0)], [2, 3, 4]);
  *   // => [3]
  *
+ * @param {Function} pred
  */
 function keep(pred) {
   return skip((...args) => !pred(...args));
@@ -509,8 +487,6 @@ const MAP = {
 /**
  * Navigates to `fn(structure)`.
  *
- * @example
- *
  *   select([map(() => true)], false);
  *   // => [true]
  *
@@ -520,13 +496,14 @@ const MAP = {
  *   transform([EACH, map(v => v + 1)], v => v + 1, [1, 2, 3, 4]);
  *   // => [3, 4, 5, 6]
  *
+ * @param {Function} fn
  */
 function map(fn) {
   return [MAP, fn];
 }
 
 /**
-p * @private
+ * @private
  */
 const RANGE = {
   ...Navigator,
@@ -549,14 +526,14 @@ const RANGE = {
  * Navigates to the sub-array bound by the indexes start (inclusive) and end
  * (exclusive).
  *
- * @example
- *
  *   select([range(0, 2)], [1, 2, 3, 4]);
  *   // => [[1, 2]]
  *
  *   transform([range(0, 2)], () => [0, 0], [1, 2, 3, 4]);
  *   // => [0, 0, 3, 4]
  *
+ * @param {Number} start
+ * @param {Number} end
  */
 function range(start, end) {
   return [RANGE, start, end];
@@ -588,14 +565,14 @@ const RANGE_DYNAMIC = {
  * Navigates to the sub-array bound by the indexes created by startFn(structure)
  * (inclusive) and endFn(structure).
  *
- * @example
- *
  *   select([rangeDynamic(() => 0, () => 2)], [1, 2, 3, 4]);
  *   // => [[1, 2]]
  *
  *   transform([rangeDynamic(() => 0, () => 2)], () => [0, 0], [1, 2, 3, 4]);
  *   // => [0, 0, 3, 4]
  *
+ * @param {Function} startFn
+ * @param {Function} endFn
  */
 function rangeDynamic(startFn, endFn) {
   return [RANGE_DYNAMIC, startFn, endFn];
@@ -622,14 +599,13 @@ const PROP_NAME = {
 /**
  * Navigates to a key in object (index in array), not the value.
  *
- * @example
- *
  *   select([propName('a')], { a: 1, b: 2 });
  *   // => ['a']
  *
  *   setval([prop('a')], 'c', { a: 1, b: 2 });
  *   // => { c: 1, b: 2 }
  *
+ * @param {String | Number} pred
  */
 function propName(key) {
   return [PROP_NAME, key];
@@ -666,14 +642,13 @@ const SUBMAP = {
 /**
  * Navigates to a submap of the original map.
  *
- * @example
- *
  *   select([submap(['a', 'b'])], { a: 1, b: 2, c: 3 });
  *   // => [{ a: 1, b: 2 }]
  *
  *   transform([submap(['a', 'b'])], () => ({ d: 4 }), { a: 1, b: 2, c: 3 });
  *   // => { c: 3, d: 4 }
  *
+ * @param {Array} keys
  */
 function submap(keys) {
   return [SUBMAP, keys];
@@ -720,8 +695,6 @@ const KEYPATH = {
  * Navigates to the value in specified keys path or `undefined` if the path
  * doesn't exist in the structure.
  *
- * @example
- *
  *   select([keypath('a', 'b')], { a: { b: 1 } });
  *   // => [1]
  *
@@ -763,8 +736,6 @@ const KEYPATH_STRICT = {
  * Same as `keypath`, but stops navigation if the path doesn't exist
  * in structure.
  *
- * @example
- *
  *   transform([keypathStrict('a', 'b')], v => v + 1, {});
  *   // => {}
  *
@@ -789,11 +760,11 @@ const WHEN = {
  * Navigates to the structure if `pred(structure)` is false, else navigate to
  * the provided argument.
  *
- * @example
- *
  *   select([EACH, when((v => v.length == 0), [1])], [[2], [], [3], []]);
  *   // => [[2], [1], [3], [1]]
  *
+ * @param {Function} pred
+ * @param {Any} val
  */
 function when(pred, val) {
   return [WHEN, pred, val];
@@ -803,11 +774,10 @@ function when(pred, val) {
  * Navigates to the value if it is not `null` or `undefined`, else navigate to
  * the provided argument.
  *
- * @example
- *
  *   select([EACH, or([1])], [[2], null, [3], null]);
  *   // => [[2], [1], [3], [1]]
  *
+ * @param {Any} val
  */
 function or(val) {
   return [WHEN, (v => v == null), val];
@@ -817,11 +787,10 @@ function or(val) {
  * Navigates to empty sub-array before selected index and previous index. It
  * is useful to insert one or multiple elements before selected index.
  *
- * @example
- *
  *   setval([beforeIndex(2)], [3], [1, 2, 4, 5]);
  *   // => [1, 2, 3, 4, 5]
  *
+ * @param {Number} i
  */
 function beforeIndex(i) {
   return [RANGE, i, i];
@@ -842,8 +811,6 @@ const STOP = {
 
 /**
  * Navigates to the structure unchanged.
- *
- * @example
  *
  *   transform([SELF], v => v + 1, 1);
  *   // => 2

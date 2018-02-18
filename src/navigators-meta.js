@@ -30,8 +30,6 @@ const SUBSELECT = {
  * of selected values, but this array is `view` of the original structure and
  * can be transformed.
  *
- * @example
- *
  *   transform(
  *     [subselect(OBJECT_VALS, EACH, OBJECT_VALS)],
  *     v => v.slice().reverse(),
@@ -47,11 +45,11 @@ function subselect(...path) {
 /**
  * Navigates to `transform(path, fn, structure)`.
  *
- * @example
- *
  *   select([transformed([OBJECT_VALS], v => v + 1)], { a: 1, b: 2, c: 3 });
  *   // => [{ a: 2, b: 3, c: 4 }]
  *
+ * @param {Array} path
+ * @param {Function} fn
  */
 function transformed(path, fn) {
   return [MAP, transform(path, fn)];
@@ -61,11 +59,11 @@ function transformed(path, fn) {
  * Navigates to a view of the current structure by transforming with a reduction
  * over the selected values.
  *
- * @example
- *
  *   select([reduced([EACH], (p, n) => p + n)], [1, 2, 3, 4]);
  *   // => [10]
  *
+ * @param {Array} path
+ * @param {Function} fn
  */
 function reduced(path, fn) {
   return [MAP, v => select(path, v).reduce(fn)];
@@ -99,8 +97,6 @@ const MULTI_PATH = {
 /**
  * Navigates to all the items in all the pats. For transforms, applies updates
  * to the paths in order. It is like calling select/transform multiple times.
- *
- * @example
  *
  *   select([multi-path([prop('a')], [prop('b')])], {a: 0, b: 1, c: 2});
  *   // => [0, 1]
@@ -158,8 +154,6 @@ const IF_PATH = {
  * anything. If so, it navigates to the corresponding `thenPath`, if not -
  * navigates to `elsePath`.
  *
- * @example
- *
  *  transform(
  *    [ifPath([prop('a')], [prop('b')], [prop('c')])],
  *    v => v + 1,
@@ -174,6 +168,9 @@ const IF_PATH = {
  *  );
  *  // => { b: 1, c: 3 }
  *
+ * @param {Array} checkPath
+ * @param {Array} thenPath
+ * @param {Array} elsePath
  */
 function ifPath(checkPath, thenPath, elsePath) {
   return [IF_PATH, checkPath, thenPath, elsePath];
@@ -184,8 +181,6 @@ function ifPath(checkPath, thenPath, elsePath) {
  * anything. If so, it navigates to the corresponding `thenPath`, otherwise, it
  * tries the next `checkPath`. If nothing matches, then the structure is not
  * selected.
- *
- * @example
  *
  *   select(
  *     [condPath(
@@ -208,6 +203,8 @@ function ifPath(checkPath, thenPath, elsePath) {
  *    );
  *    // => { b: 1, c: 2, d: [2, 3, 4] }
  *
+ * @param {Array} checkPath
+ * @param {Array} thenPath
  */
 function condPath(checkPath, thenPath, ...rest) {
   if (rest.length > 1) {
@@ -236,8 +233,6 @@ const COLLECT = {
  * containing its results. If transform is called, each collected value will be
  * passed as an argument to the transforming function with the resulting value
  * as the last argument.
- *
- * @example
  *
  *   select(
  *     [collect(FIRST), EACH],
@@ -293,6 +288,7 @@ const COLLECT_CURRENT = [COLLECT_ONE, SELF];
  *
  * See: `collect`
  *
+ * @param {Any} v
  */
 function putval(v) {
   return collectOne([MAP, () => v]);

@@ -2,7 +2,6 @@
 node_modules
 .bundle.js
 .spec.js
-.docs.js
 .notes.js
 lib
 es

@@ -45,7 +45,7 @@
     "build:es": "BABEL_ENV=es NODE_ENV=es rollup -c -o es/index.js",
     "build:commonjs": "NODE_ENV=cjs rollup -c -o lib/index.js",
     "build": "npm run build:commonjs && npm run build:es",
-    "docs:build": "dox < src/navigators.js > .docs.js",
+    "build:docs": "cat src/navigators.js src/navigators-meta.js | dox -a > ./DOCS.md",
     "prepare": "npm run test && npm run build"
   }
 }

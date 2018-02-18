@@ -264,7 +264,7 @@ multi(
 
 ### Learning
 
-- Documentation is along the way soon.
+- [DOCUMENTATION](./DOCS.md)
 - Check the `navigators.js` and `navigators_spec.js`.
 - Check [Specter](https://github.com/nathanmarz/specter)
 
