@@ -383,4 +383,5 @@ transform(
 
 ### License
 Copyright 2015-2018 Red Planet Labs, Inc. Specter is licensed under Apache License v2.0.
+
 Copyright 2018-present Ivailo Hristov under The MIT License (MIT)
