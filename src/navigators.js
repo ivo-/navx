@@ -22,6 +22,8 @@ function isPlainObject(v) {
 const Navigator = {
   isNavigator: true,
 
+  toString() { return this.name; },
+
   checks: [
     [Array.isArray, 'Array'],
     [isPlainObject, 'Object'],

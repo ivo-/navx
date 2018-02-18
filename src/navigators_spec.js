@@ -39,6 +39,7 @@ const {
   reduced,
   multiPath,
   ifPath,
+  condPath,
 } = require('./navigators-meta');
 
 
@@ -755,6 +756,38 @@ exports.IF_PATH = test => {
     v => v + 1,
     { a: [1, 2, 3], b: [1, 2, 3], c: [1, 2, 3] },
     { a: [1, 2, 3], b: [2, 3, 4], c: [1, 2, 3] },
+  );
+
+  test.done();
+};
+
+exports.COND_PATH = test => {
+  test.selectsDeepEq(
+    `[condPath(
+       [prop('a')], [prop('b')],
+       [prop('c')], [prop('d')]
+     )]`,
+    { a: 0, b: 1, c: 2, d: 3 },
+    [1]
+  );
+
+  test.selectsDeepEq(
+    `[condPath(
+       [prop('a')], [prop('b')],
+       [prop('c')], [prop('d')]
+     )]`,
+    { b: 1, c: 2, d: 3 },
+    [3]
+  );
+
+  test.transformsDeepEq(
+    `[condPath(
+       [prop('a')], [prop('b')],
+       [prop('c')], [prop('d')]
+     ), EACH]`,
+    v => v + 1,
+    { b: 1, c: 2, d: [1, 2, 3] },
+    { b: 1, c: 2, d: [2, 3, 4] },
   );
 
   test.done();

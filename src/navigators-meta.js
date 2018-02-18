@@ -123,16 +123,16 @@ const IF_PATH = {
   ...GenericNavigator,
   name: 'IF_PATH',
 
-  selectForAll(condPath, thenPath, elsePath, structure, nextFn) {
-    if (select(condPath, structure).length > 0) {
+  selectForAll(checkPath, thenPath, elsePath, structure, nextFn) {
+    if (select(checkPath, structure).length > 0) {
       select(thenPath, structure).map(v => nextFn(v));
     } else if (elsePath) {
       select(elsePath, structure).map(v => nextFn(v));
     }
   },
 
-  transformForAll(condPath, thenPath, elsePath, structure, nextFn) {
-    if (select(condPath, structure).length > 0) {
+  transformForAll(checkPath, thenPath, elsePath, structure, nextFn) {
+    if (select(checkPath, structure).length > 0) {
       return SUBSELECT.transformForAll(
         thenPath,
         structure,
@@ -153,7 +153,7 @@ const IF_PATH = {
 };
 
 /**
- * Tests if selecting with `condPath` on the current structure returns
+ * Tests if selecting with `checkPath` on the current structure returns
  * anything. If so, it navigates to the corresponding `thenPath`, if not -
  * navigates to `elsePath`.
  *
@@ -174,8 +174,46 @@ const IF_PATH = {
  *  // => { b: 1, c: 3 }
  *
  */
-function ifPath(condPath, thenPath, elsePath) {
-  return [IF_PATH, condPath, thenPath, elsePath];
+function ifPath(checkPath, thenPath, elsePath) {
+  return [IF_PATH, checkPath, thenPath, elsePath];
+}
+
+/**
+ * Tests if selecting with `checkPath` on the current structure returns
+ * anything. If so, it navigates to the corresponding `thenPath`, otherwise, it
+ * tries the next `checkPath`. If nothing matches, then the structure is not
+ * selected.
+ *
+ * @example
+ *
+ *   select(
+ *     [condPath(
+ *       [prop('a')], [prop('b')],
+ *       [prop('c')], [prop('d')],
+ *
+ *       [prop('e')]
+ *     )],
+ *     { b: 1, d: 3, e: 4 }
+ *   );
+ *   // => 4
+ *
+ *   transform(
+ *      [condPath(
+ *        [prop('a')], [prop('b')],
+ *        [prop('c')], [prop('d')]
+ *      ), EACH],
+ *      v => v + 1,
+ *      { b: 1, c: 2, d: [1, 2, 3] }
+ *    );
+ *    // => { b: 1, c: 2, d: [2, 3, 4] }
+ *
+ */
+function condPath(checkPath, thenPath, ...rest) {
+  if (rest.length > 1) {
+    return ifPath(checkPath, thenPath, [condPath(...rest)]);
+  }
+
+  return ifPath(checkPath, thenPath, ...rest);
 }
 
 module.exports = {
@@ -185,4 +223,5 @@ module.exports = {
   reduced,
   multiPath,
   ifPath,
+  condPath,
 };
