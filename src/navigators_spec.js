@@ -38,6 +38,7 @@ const {
   transformed,
   reduced,
   multiPath,
+  ifPath,
 } = require('./navigators-meta');
 
 
@@ -710,6 +711,50 @@ exports.MULTI_PATH = test => {
     v => v - 1,
     { a: 0, b: 1, c: 2 },
     { a: -1, b: 0, c: 2 }
+  );
+
+  test.transformsDeepEq(
+    `[multiPath([prop('a')], [prop('b')]), EACH]`,
+    v => v + 1,
+    { a: [1, 2, 3], b: [1, 2, 3]},
+    { a: [2, 3, 4], b: [2, 3, 4]},
+  );
+
+  test.done();
+};
+
+exports.IF_PATH = test => {
+  test.selectsDeepEq(
+    `[ifPath([prop('a')], [prop('b')])]`,
+    { a: 0, b: 1, c: 2 },
+    [1]
+  );
+
+  test.selectsDeepEq(
+    `[ifPath([prop('a')], [prop('b')], [prop('c')])]`,
+    { a: 0, b: 1, c: 2 },
+    [1]
+  );
+
+  test.transformsDeepEq(
+    `[ifPath([prop('a')], [prop('b')], [prop('c')])]`,
+    v => v + 1,
+    { a: 0, b: 1, c: 2 },
+    { a: 0, b: 2, c: 2 }
+  );
+
+  test.transformsDeepEq(
+    `[ifPath([prop('a')], [prop('b')], [prop('c')])]`,
+    v => v + 1,
+    { b: 1, c: 2 },
+    { b: 1, c: 3 }
+  );
+
+  test.transformsDeepEq(
+    `[ifPath([prop('a')], [prop('b')], [prop('c')]), EACH]`,
+    v => v + 1,
+    { a: [1, 2, 3], b: [1, 2, 3], c: [1, 2, 3] },
+    { a: [1, 2, 3], b: [2, 3, 4], c: [1, 2, 3] },
   );
 
   test.done();

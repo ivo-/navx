@@ -86,7 +86,11 @@ const MULTI_PATH = {
 
   transformForAll(paths, structure, nextFn) {
     return paths.reduce((res, path) => (
-      SUBSELECT.transformForAll(path, res, nextFn)
+      SUBSELECT.transformForAll(
+        path,
+        res,
+        results => results.map(a => nextFn(a))
+      )
     ), structure);
   },
 };
@@ -112,10 +116,73 @@ function multiPath(...paths) {
   return [MULTI_PATH, paths];
 }
 
+/**
+ * @private
+ */
+const IF_PATH = {
+  ...GenericNavigator,
+  name: 'IF_PATH',
+
+  selectForAll(condPath, thenPath, elsePath, structure, nextFn) {
+    if (select(condPath, structure).length > 0) {
+      select(thenPath, structure).map(v => nextFn(v));
+    } else if (elsePath) {
+      select(elsePath, structure).map(v => nextFn(v));
+    }
+  },
+
+  transformForAll(condPath, thenPath, elsePath, structure, nextFn) {
+    if (select(condPath, structure).length > 0) {
+      return SUBSELECT.transformForAll(
+        thenPath,
+        structure,
+        results => results.map(a => nextFn(a))
+      );
+    }
+
+    if (elsePath) {
+      return SUBSELECT.transformForAll(
+        elsePath,
+        structure,
+        results => results.map(a => nextFn(a))
+      );
+    }
+
+    return structure;
+  },
+};
+
+/**
+ * Tests if selecting with `condPath` on the current structure returns
+ * anything. If so, it navigates to the corresponding `thenPath`, if not -
+ * navigates to `elsePath`.
+ *
+ * @example
+ *
+ *  transform(
+ *    [ifPath([prop('a')], [prop('b')], [prop('c')])],
+ *    v => v + 1,
+ *    { a: 0, b: 1, c: 2 }
+ *  );
+ *  // => { a: 0, b: 2, c: 2 }
+ *
+ *  transform(
+ *    [ifPath([prop('a')], [prop('b')], [prop('c')])],
+ *    v => v + 1,
+ *    { b: 1, c: 2 }
+ *  );
+ *  // => { b: 1, c: 3 }
+ *
+ */
+function ifPath(condPath, thenPath, elsePath) {
+  return [IF_PATH, condPath, thenPath, elsePath];
+}
+
 module.exports = {
   SUBSELECT,
   subselect,
   transformed,
   reduced,
   multiPath,
+  ifPath,
 };

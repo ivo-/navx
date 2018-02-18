@@ -381,7 +381,7 @@ const PROP = {
   name: 'PROP',
 
   selectForObject(key, obj, nextFn) {
-    nextFn(obj[key]);
+    if (key in obj) nextFn(obj[key]);
   },
 
   transformForObject(key, obj, nextFn) {
