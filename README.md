@@ -381,6 +381,10 @@ transform(
 // => [{ b: 3, a: 1 }, { b: -10, a: -8 }, { b: 10, a: 14 }, { a: 3 }]
 ```
 
+### Using with React/Redux
+
+Check this [example](https://gist.github.com/ivo-/3cd95288fe3afe234adce90687107ca8).
+
 ### License
 Copyright 2015-2018 Red Planet Labs, Inc. Specter is licensed under Apache License v2.0.
 
