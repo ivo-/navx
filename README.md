@@ -247,6 +247,20 @@ setval([range(1, 2)], [1, 0, 4, 5], [2, 3]);
 // => [1, 2, 3, 4, 5]
 ```
 
+#### Multi
+
+Multiple operations at once.
+
+```js
+multi(
+  setval([EACH, (v => v < 0)], 0),
+  setval([EACH, (v => v > 10)], 10),
+
+  [-1, 1, 10, 14, 7, -4, 9, 5, 107, 10]
+);
+// => [0, 1, 10, 10, 7, 0, 9, 5, 10, 10]
+```
+
 ### Learning
 
 - Documentation is along the way soon.
@@ -332,8 +346,6 @@ transform(
 );
 // => [[1, 2, 3, 4, 5, 6, 'c', 'd'], [7, 0, -1], [8, 8, 'c', 'd'], []]
 ```
-
-### Contributing
 
 ### License
 Copyright 2015-2018 Red Planet Labs, Inc. Specter is licensed under Apache License v2.0.
