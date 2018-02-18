@@ -249,7 +249,8 @@ setval([range(1, 2)], [1, 0, 4, 5], [2, 3]);
 
 #### Multi
 
-Multiple operations at once.
+Multiple operations at once. Not that `navix` functions are automatically
+curried.
 
 ```js
 multi(
