@@ -40,6 +40,10 @@ const {
   multiPath,
   ifPath,
   condPath,
+  collect,
+  collectOne,
+  COLLECT_CURRENT,
+  putval,
 } = require('./navigators-meta');
 
 
@@ -788,6 +792,41 @@ exports.COND_PATH = test => {
     v => v + 1,
     { b: 1, c: 2, d: [1, 2, 3] },
     { b: 1, c: 2, d: [2, 3, 4] },
+  );
+
+  test.done();
+};
+
+exports.COLLECT = test => {
+  test.selectsDeepEq(
+    `[collect(FIRST), EACH]`,
+    [1, 2, 3],
+    [[[1], 1], [[1], 2], [[1], 3]]
+  );
+
+  test.transformsDeepEq(
+    `[collect(SELF), EACH]`,
+    ([all], v) => all.reduce((p, n) => p + n, v),
+    [1, 2, 3],
+    [7, 8, 9]
+  );
+
+  test.selectsDeepEq(
+    `[collectOne(SELF), EACH]`,
+    [1, 2, 3],
+    [[[1, 2, 3], 1], [[1, 2, 3], 2], [[1, 2, 3], 3]]
+  );
+
+  test.selectsDeepEq(
+    `[COLLECT_CURRENT, EACH]`,
+    [1, 2, 3],
+    [[[1, 2, 3], 1], [[1, 2, 3], 2], [[1, 2, 3], 3]]
+  );
+
+  test.selectsDeepEq(
+    `[putval(0), EACH]`,
+    [1, 2, 3],
+    [[0, 1], [0, 2], [0, 3]]
   );
 
   test.done();

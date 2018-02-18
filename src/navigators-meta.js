@@ -1,7 +1,8 @@
-const { select, transform } = require('./api');
+const { select, selectOne, transform } = require('./api');
 const {
   GenericNavigator,
   MAP,
+  SELF,
 } = require('./navigators');
 
 /**
@@ -216,6 +217,87 @@ function condPath(checkPath, thenPath, ...rest) {
   return ifPath(checkPath, thenPath, ...rest);
 }
 
+/**
+ * @private
+ */
+const COLLECT = {
+  ...GenericNavigator,
+  name: 'COLLECT',
+
+  bothForAll(path, structure, nextFn, collected) {
+    collected.push(select(path, structure));
+    return nextFn(structure);
+  },
+};
+
+/**
+ * Adds the result of running `select` with given path to the array of
+ * collected values. Note that `collect`, like `select`, returns an array
+ * containing its results. If transform is called, each collected value will be
+ * passed as an argument to the transforming function with the resulting value
+ * as the last argument.
+ *
+ * @example
+ *
+ *   select(
+ *     [collect(FIRST), EACH],
+ *     [1, 2, 3]
+ *   );
+ *   // => [[[1], 1], [[1], 2], [[1], 3]]
+ *
+ *  transform(
+ *     [collect(SELF), EACH],
+ *     ([all], v) => all.reduce((p, n) => p + n, v),
+ *     [1, 2, 3],
+ *   );
+ *   // => [7, 8, 9]
+ *
+ */
+function collect(...path) {
+  return [COLLECT, path];
+}
+
+/**
+ * @private
+ */
+const COLLECT_ONE = {
+  ...GenericNavigator,
+  name: 'COLLECT_ONE',
+
+  bothForAll(path, structure, nextFn, collected) {
+    collected.push(selectOne(path, structure));
+    return nextFn(structure);
+  },
+};
+
+/**
+ * Same as `collect`, but uses `selectOne`.
+ *
+ * See: `collect`
+ *
+ */
+function collectOne(...path) {
+  return [COLLECT_ONE, path];
+}
+
+/**
+ * Same as `collectOne(SELF)`. Collects current value.
+ *
+ * See: `collect`, `collectOne`
+ *
+ */
+const COLLECT_CURRENT = [COLLECT_ONE, SELF];
+
+/**
+ * Adds `v` to collected items.
+ *
+ * See: `collect`
+ *
+ */
+function putval(v) {
+  return collectOne([MAP, () => v]);
+}
+
 module.exports = {
   SUBSELECT,
   subselect,
@@ -224,4 +306,8 @@ module.exports = {
   multiPath,
   ifPath,
   condPath,
+  collect,
+  collectOne,
+  COLLECT_CURRENT,
+  putval,
 };

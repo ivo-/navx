@@ -29,7 +29,7 @@ const Navigator = {
     [isPlainObject, 'Object'],
   ],
 
-  _op(structure, args, nextFn, op) {
+  _op(structure, args, nextFn, op, collected) {
     const match = this.checks.find(([check]) => (
       check(structure)
     ));
@@ -52,15 +52,15 @@ const Navigator = {
       }.`);
     }
 
-    return this[method](...args, structure, nextFn);
+    return this[method](...args, structure, nextFn, collected);
   },
 
-  select(args, structure, nextFn) {
-    return this._op(structure, args, nextFn, 'select');
+  select(args, structure, nextFn, collected) {
+    return this._op(structure, args, nextFn, 'select', collected);
   },
 
-  transform(args, structure, nextFn) {
-    return this._op(structure, args, nextFn, 'transform');
+  transform(args, structure, nextFn, collected) {
+    return this._op(structure, args, nextFn, 'transform', collected);
   },
 };
 
