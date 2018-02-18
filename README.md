@@ -12,7 +12,7 @@ $ npm install --save navx
 
 ### What is it
 
-Standard functional toolbox - `map`, `filter`, `reduce` is not really elegant at handling nested data structures. It is perfectly capable at dealing with ones that have max one or two levels of nesting. Navx elegantly handles deeply nested scenarios while remaining more concise than traditional methods even for the simplest cases. Approach here is conceptually related to functional lenses and zippers. Some alternative explanations of what Navx is:
+Standard functional toolbox - `map`, `filter`, `reduce` is not really elegant at handling nested data structures. It is perfectly capable at dealing with ones that have max one or two levels of nesting. Navx elegantly handles deeply nested scenarios while remaining more concise than traditional methods even for the simple cases. Approach here is conceptually related to functional lenses and zippers. Some alternative explanations of what Navx is:
 
 - A port of the Clojure's super awesome [Specter](https://github.com/nathanmarz/specter) library with adapted semantics for JavaScript.
 - A single tool for both data querying and transformation with minimum code duplication.
@@ -106,16 +106,16 @@ We need an abstraction to navigate and transform just the desired part of the
 data structure, without all the error-prone, boilerplate code along the
 way. In `Navix` you describe the path your want to manipulate using
 `navigators` and then use this path to select or transform navigated data. This
-approach results in simple, fast and elegant code even for arbitrary nested
+approach results in simple, fast and elegant code for arbitrary nested
 data structures.
 
-`Navix` doesn't provide some tricky DSL, just data. Navigators are first-class
+`Navix` doesn't provide some tricky DSL, everything is just data. Navigators are first-class
 objects that are grouped in array and then composed together.
 
 ### What to expect from using Navix
 
 - It really shines the more complex the example gets.
-- It is single thing you can learn and use for both data selection and
+- It is single tool you can learn and use for both data selection and
   transformation.
 - It initally feels unnatural, but when you grok it, you will wonder how you've
   ever lived without it.
@@ -130,8 +130,8 @@ objects that are grouped in array and then composed together.
 
 Navix has an extremely simple core, just a single abstraction called
 `navigator`. Queries and transforms are done by composing navigators into a
-`path` precisely targeting what you want to retrieve or change. Navigators can
-be composed with any other navigators, allowing sophisticated manipulations to
+`path` precisely targeting what you want to select or change. Navigators can
+be composed with other navigators, allowing sophisticated manipulations to
 be expressed very concisely.
 
 `Navix` transforms always target precise parts of a data structure, leaving
@@ -140,7 +140,7 @@ everything else the same.
 *Selection steps*:
 
 - *navigate* to the desired parts of the data structure.
-- *collect* those parts in array. And if you want just to select navigated
+- *select* those parts in array. And if you want just to select navigated
   values this is the last step.
 
 *Added transformation steps*:
@@ -249,7 +249,7 @@ setval([range(1, 2)], [1, 0, 4, 5], [2, 3]);
 
 #### Multi
 
-Multiple operations at once. Not that `navix` functions are automatically
+Multiple operations at once. Note that `navix` functions are automatically
 curried.
 
 ```js
@@ -346,6 +346,39 @@ transform(
   [[1, 2, 3, 4, 5, 6], [7, 0, -1], [8, 8], []],
 );
 // => [[1, 2, 3, 4, 5, 6, 'c', 'd'], [7, 0, -1], [8, 8, 'c', 'd'], []]
+```
+
+**Example 9: Reverse values in all objects in array**
+
+This example illustrates one of the most powerful navigtors in navix -
+`subselect`. Subselect navigates to array of selected values from provided path
+and this array is a view of the original structure.
+
+```js
+transform(
+  [subselect(EACH, OBJECT_VALS)],
+  v => v.slice().reverse(),
+  [{ a: 1}, { b: 2 }, { c: 3 }]
+)
+// => [{ a: 3}, { b: 2 }, { c: 1 }]
+```
+
+**Example 10: Collecting values**
+
+When doing more involved transformations, you often find you lose context when
+navigating deep within a data structure and need information "up" the data
+structure to perform the transformation. Navix solves this problem by allowing
+you to collect values during navigation to use in the transform function. Here's
+an example which transforms an array of objects by adding the value of the `b`
+key to the value of the `a` key, but only if the `a` key is even:
+
+```js
+transform(
+  [EACH, collectOne(prop('b')), prop('a'), a => a % 2 !== 0],
+  (bVal, aVal) => aVal + aVal,
+  [{ a: 1, b: 3 }, { a: 2, b: -10 }, { a: 4, b: 10 }, { a: 3 }]
+);
+// => [{ b: 3, a: 1 }, { b: -10, a: -8 }, { b: 10, a: 14 }, { a: 3 }]
 ```
 
 ### License

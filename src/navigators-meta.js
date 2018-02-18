@@ -154,19 +154,19 @@ const IF_PATH = {
  * anything. If so, it navigates to the corresponding `thenPath`, if not -
  * navigates to `elsePath`.
  *
- *  transform(
- *    [ifPath([prop('a')], [prop('b')], [prop('c')])],
- *    v => v + 1,
- *    { a: 0, b: 1, c: 2 }
- *  );
- *  // => { a: 0, b: 2, c: 2 }
+ *   transform(
+ *     [ifPath([prop('a')], [prop('b')], [prop('c')])],
+ *     v => v + 1,
+ *     { a: 0, b: 1, c: 2 }
+ *   );
+ *   // => { a: 0, b: 2, c: 2 }
  *
- *  transform(
- *    [ifPath([prop('a')], [prop('b')], [prop('c')])],
- *    v => v + 1,
- *    { b: 1, c: 2 }
- *  );
- *  // => { b: 1, c: 3 }
+ *   transform(
+ *     [ifPath([prop('a')], [prop('b')], [prop('c')])],
+ *     v => v + 1,
+ *     { b: 1, c: 2 }
+ *   );
+ *   // => { b: 1, c: 3 }
  *
  * @param {Array} checkPath
  * @param {Array} thenPath

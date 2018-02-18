@@ -14,62 +14,61 @@ function autocurry(fn) {
 
 function select(_navigator, _data) {
   const result = [];
-  const collected = [];
-
-  const _select = (navigator, data) => {
+  const _select = (navigator, data, collected) => {
+    collected = collected.slice();
     if (navigator.length > 0) {
       const nav = Array.isArray(navigator[0]) ? navigator[0][0] : navigator[0];
       const navArgs = Array.isArray(navigator[0]) ? navigator[0].slice(1) : [];
 
       const res =
         typeof nav === 'function'
-          ? _select([keep(nav), ...navigator.slice(1)], data)
+          ? _select([keep(nav), ...navigator.slice(1)], data, collected)
           : nav.select(
             navArgs,
             data,
-            _select.bind(this, navigator.slice(1)),
+            d => _select(navigator.slice(1), d, collected),
             collected
           );
 
       return res;
     }
 
-    result.push(data);
+    if (collected.length) {
+      result.push([...collected, data]);
+    } else {
+      result.push(data);
+    }
     return data;
   };
 
-  _select(_navigator, _data);
-
-  if (collected.length) {
-    return result.map(r => [...collected, r]);
-  }
+  _select(_navigator, _data, []);
 
   return result;
 }
 
 function transform(_navigator, _f, _data) {
-  const collected = [];
-  return ((function _transform(navigator, f, data) {
+  return ((function _transform(navigator, f, data, collected) {
     if (typeof f !== 'function') throw new Error(`${f} is not a function.`);
 
+    collected = collected.slice();
     if (navigator.length > 0) {
       const nav = Array.isArray(navigator[0]) ? navigator[0][0] : navigator[0];
       const args = Array.isArray(navigator[0]) ? navigator[0].slice(1) : [];
 
       if (typeof nav === 'function') {
-        return _transform([keep(nav), ...navigator.slice(1)], f, data);
+        return _transform([keep(nav), ...navigator.slice(1)], f, data, collected);
       }
 
       return nav.transform(
         args,
         data,
-        _transform.bind(this, navigator.slice(1), f),
+        d => _transform(navigator.slice(1), f, d, collected),
         collected
       );
     }
 
     return f(...[...collected, data]);
-  })(_navigator, _f, _data));
+  })(_navigator, _f, _data, []));
 }
 
 function selectOne(navigator, data) {
