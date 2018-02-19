@@ -830,7 +830,7 @@ exports.COLLECT = test => {
   );
 
   test.transformsDeepEq(
-    `[EACH, collectOne(prop('b')), prop('a'), a => a % 2 === 0]`,
+    `[EACH, collectOne('b'), 'a', a => a % 2 === 0]`,
     (bVal, aVal) => bVal + aVal,
     [{ a: 1, b: 3 }, { a: 2, b: -10 }, { a: 4, b: 10 }, { a: 3 }],
     [{ b: 3, a: 1 }, { b: -10, a: -8 }, { b: 10, a: 14 }, { a: 3 }]
@@ -938,7 +938,7 @@ exports['example-2'] = test => {
 
 exports['example-other'] = test => {
   test.transformsDeepEq(
-    `[EACH, prop('a'), (v => v % 2 === 0)]`,
+    `[EACH, 'a', (v => v % 2 === 0)]`,
     v => v + 1,
     [{ a: 1 }, { a: 2 }, { a: 4 }, { a: 3 }],
     [{ a: 1 }, { a: 3 }, { a: 5 }, { a: 3 }]

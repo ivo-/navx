@@ -292,7 +292,7 @@ const result = [...data.slice(0, index), value + 1, ...data.slice(index + 1)];
 **Example 3: Increment all the even values for `a` keys in array of maps:**
 ```js
 transforms(
-  [EACH, prop('a'), (v => v % 2 === 0)],
+  [EACH, 'a', (v => v % 2 === 0)],
   v => v + 1,
   [{ a: 1 }, { a: 2 }, { a: 4 }, { a: 3 }]
 );
@@ -374,7 +374,7 @@ key to the value of the `a` key, but only if the `a` key is even:
 
 ```js
 transform(
-  [EACH, collectOne(prop('b')), prop('a'), a => a % 2 !== 0],
+  [EACH, collectOne('b'), 'a', a => a % 2 !== 0],
   (bVal, aVal) => aVal + aVal,
   [{ a: 1, b: 3 }, { a: 2, b: -10 }, { a: 4, b: 10 }, { a: 3 }]
 );

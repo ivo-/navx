@@ -1,4 +1,4 @@
-const { keep } = require('./navigators');
+const { keep, prop } = require('./navigators');
 
 function autocurry(fn) {
   const { length } = fn;
@@ -20,17 +20,20 @@ function select(_navigator, _data) {
       const nav = Array.isArray(navigator[0]) ? navigator[0][0] : navigator[0];
       const navArgs = Array.isArray(navigator[0]) ? navigator[0].slice(1) : [];
 
-      const res =
-        typeof nav === 'function'
-          ? _select([keep(nav), ...navigator.slice(1)], data, collected)
-          : nav.select(
+      switch (typeof nav) {
+        case 'function':
+          return _select([keep(nav), ...navigator.slice(1)], data, collected);
+        case 'string':
+        case 'number':
+          return _select([prop(nav), ...navigator.slice(1)], data, collected);
+        default:
+          return nav.select(
             navArgs,
             data,
             d => _select(navigator.slice(1), d, collected),
             collected
           );
-
-      return res;
+      }
     }
 
     if (collected.length) {
@@ -55,16 +58,20 @@ function transform(_navigator, _f, _data) {
       const nav = Array.isArray(navigator[0]) ? navigator[0][0] : navigator[0];
       const args = Array.isArray(navigator[0]) ? navigator[0].slice(1) : [];
 
-      if (typeof nav === 'function') {
-        return _transform([keep(nav), ...navigator.slice(1)], f, data, collected);
+      switch (typeof nav) {
+        case 'function':
+          return _transform([keep(nav), ...navigator.slice(1)], f, data, collected);
+        case 'string':
+        case 'number':
+          return _transform([prop(nav), ...navigator.slice(1)], f, data, collected);
+        default:
+          return nav.transform(
+            args,
+            data,
+            d => _transform(navigator.slice(1), f, d, collected),
+            collected
+          );
       }
-
-      return nav.transform(
-        args,
-        data,
-        d => _transform(navigator.slice(1), f, d, collected),
-        collected
-      );
     }
 
     return f(...[...collected, data]);
