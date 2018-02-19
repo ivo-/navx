@@ -22,7 +22,8 @@
     "dist",
     "lib",
     "es",
-    "src"
+    "src",
+    "rollup.config.js"
   ],
   "devDependencies": {
     "babel-core": "^6.26.0",
