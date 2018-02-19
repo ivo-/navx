@@ -22,31 +22,25 @@
     "dist",
     "lib",
     "es",
-    "src",
-    "rollup.config.js"
+    "src"
   ],
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
-    "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "dox": "^0.9.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "nodeunit": "^0.11.2",
-    "rollup": "^0.55.1",
-    "rollup-plugin-babel": "^3.0.3",
-    "rollup-plugin-eslint": "^4.0.0",
-    "rollup-plugin-node-resolve": "^3.0.2",
-    "rollup-plugin-replace": "^2.0.0"
+    "nodeunit": "^0.11.2"
   },
   "scripts": {
     "test": "nodeunit src/**_spec.js",
-    "build:es": "BABEL_ENV=es NODE_ENV=es rollup -c -o es/index.js",
-    "build:commonjs": "NODE_ENV=cjs rollup -c -o lib/index.js",
-    "build": "npm run build:commonjs && npm run build:es",
+    "lint": "eslint src/**",
+    "lint:fix": "eslint --fix src/**",
+    "build": "npx babel src --out-dir lib",
     "build:docs": "cat src/navigators.js src/navigators-meta.js | dox -a > ./DOCS.md",
-    "prepare": "npm run test && npm run build"
+    "prepare": "npm run lint && npm run test && npm run build && npm run build:docs"
   }
 }

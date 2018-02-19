@@ -201,8 +201,10 @@ exports.OBJECT_VALS = test => {
 
   test.selectsDeepEq(
     `[OBJECT_VALS, OBJECT_VALS]`,
-    { a: { b: 'c' },
-      d: { e: 'f' } },
+    {
+      a: { b: 'c' },
+      d: { e: 'f' },
+    },
     ['c', 'f']
   );
 
@@ -386,7 +388,7 @@ exports.RANGE = test => {
 
   test.transformsDeepEq(
     `[range(0, 2)]`,
-    ()  => [0, 0],
+    () => [0, 0],
     [1, 2, 3, 4],
     [0, 0, 3, 4]
   );
@@ -409,7 +411,7 @@ exports.RANGE_DYNAMIC = test => {
   );
   test.transformsDeepEq(
     `[rangeDynamic(() => 0, () => 2)]`,
-    ()  => [0, 0],
+    () => [0, 0],
     [1, 2, 3, 4],
     [0, 0, 3, 4]
   );
@@ -633,22 +635,22 @@ exports.SELF = test => {
 exports.SUBSELECT = test => {
   test.selectsDeepEq(
     `[subselect(OBJECT_VALS, EACH, OBJECT_VALS)]`,
-    {items: [{ a: 1 }, { b: 2 }, { c: 3 }]},
+    { items: [{ a: 1 }, { b: 2 }, { c: 3 }] },
     [[1, 2, 3]]
   );
 
   test.transformsDeepEq(
     `[subselect(OBJECT_VALS, EACH, OBJECT_VALS)]`,
     v => v.slice().reverse(),
-    {items: [{ a: 1 }, { b: 2 }, { c: 3 }]},
-    {items: [{ a: 3 }, { b: 2 }, { c: 1 }]},
+    { items: [{ a: 1 }, { b: 2 }, { c: 3 }] },
+    { items: [{ a: 3 }, { b: 2 }, { c: 1 }] },
   );
 
   test.transformsDeepEq(
     `[subselect(OBJECT_VALS, EACH, OBJECT_VALS), range(0, 3)]`,
     v => v.slice().reverse(),
-    {items: [{ a: 1 }, { b: 2 }, { c: 3 }, { d: 5 }]},
-    {items: [{ a: 3 }, { b: 2 }, { c: 1 }, { d: 5 }]},
+    { items: [{ a: 1 }, { b: 2 }, { c: 3 }, { d: 5 }] },
+    { items: [{ a: 3 }, { b: 2 }, { c: 1 }, { d: 5 }] },
   );
 
   test.done();
@@ -681,8 +683,8 @@ exports.TRANSFORMED = test => {
 
   test.selectsDeepEq(
     `[transformed([OBJECT_VALS, EACH, OBJECT_VALS], v => v + 1)]`,
-    {items: [{ a: 1 }, { b: 2 }, { c: 3 }]},
-    [{items: [{ a: 2 }, { b: 3 }, { c: 4 }]}]
+    { items: [{ a: 1 }, { b: 2 }, { c: 3 }] },
+    [{ items: [{ a: 2 }, { b: 3 }, { c: 4 }] }]
   );
 
   test.done();
@@ -707,7 +709,7 @@ exports.REDUCED = test => {
 exports.MULTI_PATH = test => {
   test.selectsDeepEq(
     `[multiPath([prop('a')], [prop('b')])]`,
-    {a: 0, b: 1, c: 2},
+    { a: 0, b: 1, c: 2 },
     [0, 1]
   );
 
@@ -721,8 +723,8 @@ exports.MULTI_PATH = test => {
   test.transformsDeepEq(
     `[multiPath([prop('a')], [prop('b')]), EACH]`,
     v => v + 1,
-    { a: [1, 2, 3], b: [1, 2, 3]},
-    { a: [2, 3, 4], b: [2, 3, 4]},
+    { a: [1, 2, 3], b: [1, 2, 3] },
+    { a: [2, 3, 4], b: [2, 3, 4] },
   );
 
   test.done();
@@ -771,7 +773,9 @@ exports.COND_PATH = test => {
        [prop('a')], [prop('b')],
        [prop('c')], [prop('d')]
      )]`,
-    { a: 0, b: 1, c: 2, d: 3 },
+    {
+      a: 0, b: 1, c: 2, d: 3,
+    },
     [1]
   );
 
@@ -1002,9 +1006,9 @@ exports['example-other'] = test => {
   }
 
   function transforms(check, path, f, structure, value) {
-    const transformed = transform(eval(path), f, structure);
+    const trans = transform(eval(path), f, structure);
     this[check](
-      transformed,
+      trans,
       value,
       `
  TRANSFORM ${path} from ${JSON.stringify(structure)}
