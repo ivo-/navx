@@ -1,6 +1,6 @@
 {
   "name": "navx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A tool to elegantly manipulate nested JavaScript data structures.",
   "main": "lib/index.js",
   "module": "es/index.js",
