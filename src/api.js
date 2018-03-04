@@ -60,10 +60,20 @@ function transform(_navigator, _f, _data) {
 
       switch (typeof nav) {
         case 'function':
-          return _transform([keep(nav), ...navigator.slice(1)], f, data, collected);
+          return _transform(
+            [keep(nav), ...navigator.slice(1)],
+            f,
+            data,
+            collected
+          );
         case 'string':
         case 'number':
-          return _transform([prop(nav), ...navigator.slice(1)], f, data, collected);
+          return _transform(
+            [prop(nav), ...navigator.slice(1)],
+            f,
+            data,
+            collected
+          );
         default:
           return nav.transform(
             args,
