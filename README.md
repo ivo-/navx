@@ -386,6 +386,5 @@ transform(
 Check this [example](https://gist.github.com/ivo-/3cd95288fe3afe234adce90687107ca8).
 
 ### License
-Copyright 2015-2018 Red Planet Labs, Inc. Specter is licensed under Apache License v2.0.
 
 Copyright 2018-present Ivailo Hristov under The MIT License (MIT)
